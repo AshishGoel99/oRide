@@ -12,6 +12,9 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { RouteService } from "../pages/routeService";
 
+import { Facebook } from '@ionic-native/facebook';
+import { IonicStorageModule  } from '@ionic/storage';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -22,7 +25,8 @@ import { RouteService } from "../pages/routeService";
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -36,7 +40,9 @@ import { RouteService } from "../pages/routeService";
     StatusBar,
     SplashScreen,
     RouteService,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    Facebook,
+    Storage,
+    { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
-export class AppModule {}
+export class AppModule { }
