@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
 import { MyApp } from './app.component';
 
-import { AboutPage } from '../pages/about/about';
+import { SchedulePage } from '../pages/schedule/schedule';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -14,14 +14,18 @@ import { RouteService } from "../pages/routeService";
 
 import { Facebook } from '@ionic-native/facebook';
 import { IonicStorageModule  } from '@ionic/storage';
+import { SideMenu } from "../pages/sideMenu/sideMenu";
+import { SettingPage } from "../pages/setting/setting";
 
 @NgModule({
   declarations: [
     MyApp,
-    AboutPage,
+    SchedulePage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    SideMenu,
+    SettingPage
   ],
   imports: [
     BrowserModule,
@@ -31,10 +35,12 @@ import { IonicStorageModule  } from '@ionic/storage';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    AboutPage,
+    SchedulePage,
     ContactPage,
     HomePage,
-    TabsPage
+    TabsPage,
+    SideMenu,
+    SettingPage
   ],
   providers: [
     StatusBar,

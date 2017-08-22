@@ -5,6 +5,8 @@ import { RouteService } from "../routeService";
 import { googlemaps } from 'googlemaps';
 import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { Storage } from '@ionic/storage';
+import { PopoverController } from 'ionic-angular';
+import { SideMenu } from "../sideMenu/sideMenu";
 
 @Component({
   selector: 'page-home',
@@ -25,7 +27,8 @@ export class HomePage implements OnInit {
   constructor(public navCtrl: NavController,
     public loadingCtrl: LoadingController,
     private routeService: RouteService,
-    private fb: Facebook, private storage: Storage) {
+    private fb: Facebook, private storage: Storage,
+    private popoverCtrl: PopoverController) {
   }
 
   ngOnInit() {
@@ -67,6 +70,13 @@ export class HomePage implements OnInit {
     console.log('modal > chooseItem > item > ', item);
     this.autocomplete.query = item.description;
     this.autocompleteItems = [];
+  }
+  
+  presentMenu(myEvent) {
+    let popover = this.popoverCtrl.create(SideMenu);
+    popover.present({
+      ev: myEvent
+    });
   }
 
   updateSearch() {
