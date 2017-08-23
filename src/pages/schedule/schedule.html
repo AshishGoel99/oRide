@@ -1,10 +1,112 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>
+    <ion-title text-center>
       Schedule
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+  <ion-list>
+    <ion-searchbar id="origin" placeholder="From" animated="true">
+    </ion-searchbar>
+    <ion-searchbar id="destination" placeholder="To" animated="true">
+    </ion-searchbar>
+    <ion-item-divider>
+      Route Points (If any)
+      <ion-icon item-end name="md-add-circle" (click)="addWayPoint()" [hidden]="waypoints.length>=3"></ion-icon>
+    </ion-item-divider>
+    <div class="row" [hidden]="waypoints.length<=0">
+      <ion-searchbar *ngFor="let waypoint of waypoints" id="{{waypoint.id}}" placeholder="Choose a waypoint" animated="true">
+      </ion-searchbar>
+    </div>
+  </ion-list>
+
+  <div text-center>
+    <button (click)="showMap()" ion-button small color="light">See Map</button>
+  </div>
+  <br>
+
+  <div id="map" class="map" data-tap-disabled="true" [hidden]="!isShowMap"></div>
+  <div [hidden]="!isShowMap"><br><b>Total Distance : </b>{{distance}}</div>
+  <ion-list>
+    <ion-item-divider text-center>
+      Schedule
+    </ion-item-divider>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-input (click)="timeSelect('go')" [(ngModel)]="schedule.GoTime" placeholder="Going Time  --:--"></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input (click)="timeSelect('return')" [(ngModel)]="schedule.ReturnTime" placeholder="Returning Time  --:--"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-select [(ngModel)]="scheduleType">
+            <ion-option selected value="0">Weekly</ion-option>
+            <ion-option value="1">Specific Date</ion-option>
+          </ion-select>
+        </ion-col>
+        <ion-col [hidden]="true" id="scheduleDate">
+          <ion-input (click)="dateSelect()" [(ngModel)]="schedule.Date" placeholder="Date  --/--/----"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row id="scheduleDays">
+        <ion-col>
+          <button class="button button-float" ng-class="getClass(0)" (click)="dayClick(0)">
+                    <i class="icon">S</i>
+                </button>
+          <button class="button button-float" ng-class="getClass(1)" (click)="dayClick(1)">
+                    <i class="icon">M</i>
+                </button>
+          <button class="button button-float" ng-class="getClass(2)" (click)="dayClick(2)">
+                    <i class="icon">T</i>
+                </button>
+          <button class="button button-float" ng-class="getClass(3)" (click)="dayClick(3)">
+                    <i class="icon">W</i>
+                </button>
+          <button class="button button-float" ng-class="getClass(4)" (click)="dayClick(4)">
+                    <i class="icon">T</i>
+                </button>
+          <button class="button button-float" (click)="dayClick(5)" ng-class="getClass(5)">
+                    <i class="icon">F</i>
+                </button>
+          <button class="button button-float" (click)="dayClick(6)" ng-class="getClass(6)">
+                    <i class="icon">S</i>
+                </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <br>
+    <ion-item-divider text-center>
+      Availability
+    </ion-item-divider>
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-input type="number" [(ngModel)]="schedule.SeatsAvail" placeholder="Seats"></ion-input>
+        </ion-col>
+        <ion-col>
+          <ion-input type="number" [(ngModel)]="schedule.Price" placeholder="Fare/s"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-input [(ngModel)]="schedule.VehicleNo" placeholder="Vehicle No"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-input type="tel" [(ngModel)]="schedule.ContactNo" placeholder="Contact No"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col text-center>
+          <button (click)="saveSchedule()" ion-button color="positive">Save</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
 </ion-content>

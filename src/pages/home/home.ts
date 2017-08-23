@@ -7,6 +7,7 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { Storage } from '@ionic/storage';
 import { PopoverController } from 'ionic-angular';
 import { SideMenu } from "../sideMenu/sideMenu";
+import { GoogleService } from "../googleService";
 
 @Component({
   selector: 'page-home',
@@ -15,37 +16,36 @@ import { SideMenu } from "../sideMenu/sideMenu";
 
 export class HomePage implements OnInit {
 
-  from: String;
-  to: String;
+  from: string;
+  to: string;
+  fromPlace: any;
+  toPlace: any;
   routes: Route[];
-
-  autocompleteItems: any;
-  autocomplete: any;
-  acService: any;
-  placesService: any;
 
   constructor(public navCtrl: NavController,
     public loadingCtrl: LoadingController,
     private routeService: RouteService,
     private fb: Facebook, private storage: Storage,
-    private popoverCtrl: PopoverController) {
+    private popoverCtrl: PopoverController,
+    private googleService: GoogleService) {
   }
 
   ngOnInit() {
-    
-    this.acService = new google.maps.places.AutocompleteService();
-    this.autocompleteItems = [];
-    this.autocomplete = {
-      query: ''
-    };
 
     this.storage.get("data").then(data => {
       if (data == null)
         this.userLogin();
     });
+
+    this.googleService.setAutoComplete("from", (place) => {
+      this.fromPlace = place;
+    });
+    this.googleService.setAutoComplete("to", (place) => {
+      this.toPlace = place;
+    });
   }
 
-  userLogin(): void {
+  private userLogin(): void {
     this.fb.login(['public_profile', 'user_friends', 'email'])
       .then((res: FacebookLoginResponse) => {
         console.log('Logged into Facebook!', res);
@@ -66,37 +66,10 @@ export class HomePage implements OnInit {
     return "";
   }
 
-  chooseItem(item: any) {
-    console.log('modal > chooseItem > item > ', item);
-    this.autocomplete.query = item.description;
-    this.autocompleteItems = [];
-  }
-  
-  presentMenu(myEvent) {
+  private presentMenu(myEvent): void {
     let popover = this.popoverCtrl.create(SideMenu);
     popover.present({
       ev: myEvent
-    });
-  }
-
-  updateSearch() {
-    console.log('modal > updateSearch');
-    if (this.autocomplete.query == '') {
-      this.autocompleteItems = [];
-      return;
-    }
-    let self = this;
-    let config = {
-      //types:  ['geocode'], // other types available in the API: 'establishment', 'regions', and 'cities'
-      input: this.autocomplete.query,
-      componentRestrictions: { country: 'IN' }
-    }
-    this.acService.getPlacePredictions(config, function (predictions, status) {
-      console.log('modal > getPlacePredictions > status > ', status);
-      self.autocompleteItems = [];
-      predictions.forEach(function (prediction) {
-        self.autocompleteItems.push(prediction);
-      });
     });
   }
 

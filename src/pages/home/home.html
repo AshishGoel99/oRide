@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title text-center>Home</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="presentMenu($event)">
         <ion-icon name="more"></ion-icon>
@@ -10,15 +10,9 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-searchbar placeholder="From" animated="true" [(ngModel)]="autocomplete.query" [showCancelButton]="true" (ionInput)="updateSearch()"
-    (ionCancel)="dismiss()">
+  <ion-searchbar placeholder="From" id="from" animated="true" [(ngModel)]="from">
   </ion-searchbar>
-  <ion-list>
-    <ion-item *ngFor="let item of autocompleteItems" (click)="chooseItem(item)">
-      {{ item.description }}
-    </ion-item>
-  </ion-list>
-  <ion-searchbar placeholder="To" animated="true"></ion-searchbar>
+  <ion-searchbar placeholder="To" id="to" [(ngModel)]="to" animated="true"></ion-searchbar>
   <div padding text-center>
     <button (click)="searchRoutes()" ion-button small color="light">Find Routes</button>
   </div>
