@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { GoogleService } from "../googleService";
 import { MapElements } from "../mapElements";
+import { UtilityService } from "../utilityService";
 
 @Component({
   selector: 'page-schedule',
@@ -8,36 +9,43 @@ import { MapElements } from "../mapElements";
 })
 export class SchedulePage implements OnInit {
 
-  isShowMap: boolean;
-  schedule: any;
-  waypoints: any;
-  fromPlace: any;
-  toPlace: any;
-  distance: string;
+  private isShowMap: boolean;
+  private schedule: any;
+  private distance: string;
 
-  constructor(private googleService: GoogleService) {
+  constructor(private googleService: GoogleService,
+    private ngZone: NgZone,
+    private utilityService: UtilityService) {
   }
 
   ngOnInit(): void {
     this.schedule = {
-      from: '',
-      to: ''
+      from: null,
+      to: null,
+      waypoints: [],
+      distance: null,
+      goTime: null,
+      returnTime: null,
+      scheduleType: 0,
+      date: null,
+      seatsAvail: 0,
+      price: 0,
+      vehicleNo: '',
+      contactNo: ''
     };
-
-    this.waypoints = [];
 
     this.googleService.setAutoComplete("origin", (place) => {
       this.schedule.from = place;
     });
     this.googleService.setAutoComplete("destination", (place) => {
-      this.schedule.from = place;
+      this.schedule.to = place;
     });
   }
 
   private addWayPoint(): void {
-    if (this.waypoints.length < 5) {
-      var newWaypoint = { id: "waypoint" + (this.waypoints.length + 1), place: null };
-      this.waypoints.push(newWaypoint);
+    if (this.schedule.waypoints.length < 5) {
+      var newWaypoint = { id: "waypoint" + (this.schedule.waypoints.length + 1), place: null };
+      this.schedule.waypoints.push(newWaypoint);
 
       setTimeout(() => {
         this.googleService.setAutoComplete(newWaypoint.id, (place) => {
@@ -50,10 +58,16 @@ export class SchedulePage implements OnInit {
   private showMap(): void {
     if (this.schedule.from && this.schedule.to) {
 
-      this.googleService.drawMapAndGetPolygon("map", this.waypoints, this.fromPlace, this.toPlace,
+      this.isShowMap = true;
+      let loading = this.utilityService.showLoading();
+
+      this.googleService.drawMapAndGetPolygon("map", this.schedule.waypoints, this.schedule.from, this.schedule.to,
         (elems: MapElements) => {
-          this.distance = elems.Distance;
-          this.isShowMap = true;
+          this.ngZone.run(() => {
+            console.log(elems);
+            this.schedule.distance = elems.Distance;
+            loading.dismiss();
+          });
         });
     }
   }

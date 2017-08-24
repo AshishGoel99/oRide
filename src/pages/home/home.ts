@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 import { PopoverController } from 'ionic-angular';
 import { SideMenu } from "../sideMenu/sideMenu";
 import { GoogleService } from "../googleService";
+import { UtilityService } from "../utilityService";
 
 @Component({
   selector: 'page-home',
@@ -23,7 +24,7 @@ export class HomePage implements OnInit {
   routes: Route[];
 
   constructor(public navCtrl: NavController,
-    public loadingCtrl: LoadingController,
+    private utilityService: UtilityService,
     private routeService: RouteService,
     private fb: Facebook, private storage: Storage,
     private popoverCtrl: PopoverController,
@@ -74,20 +75,12 @@ export class HomePage implements OnInit {
   }
 
   private searchRoutes(): void {
-    let loading = this.showLoading();
-    loading.present();
+    let loading = this.utilityService.showLoading();
 
     this.routeService.getRoutes(this.from, this.to)
       .then(routes => {
         this.routes = routes
         loading.dismiss();
       });
-  }
-
-  private showLoading(): Loading {
-    let loading = this.loadingCtrl.create({
-      content: 'Please wait...'
-    });
-    return loading;
   }
 }

@@ -17,6 +17,7 @@ import { IonicStorageModule  } from '@ionic/storage';
 import { SideMenu } from "../pages/sideMenu/sideMenu";
 import { SettingPage } from "../pages/setting/setting";
 import { GoogleService } from "../pages/googleService";
+import { UtilityService } from "../pages/utilityService";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { GoogleService } from "../pages/googleService";
     Facebook,
     Storage,
     GoogleService,
+    UtilityService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

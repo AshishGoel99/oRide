@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MapElements } from "./mapElements";
 
+declare let jsts: any;
 @Injectable()
 export class GoogleService {
 
@@ -28,20 +29,25 @@ export class GoogleService {
             map: map
         });
 
+        let setMapVariables = this.setMapVariables;
+        let computeTotalDistance = this.computeTotalDistance;
+        let googleMaps2JTS = this.googleMaps2JTS;
+        let jsts2googleMaps = this.jsts2googleMaps;
+
         directionsDisplay.addListener('directions_changed', function () {
             var resp = directionsDisplay.getDirections();
-            let coords: MapElements = this.setMapVariables(resp);
-            coords.Distance = this.computeTotalDistance(resp);
+            let coords: MapElements = setMapVariables(resp, googleMaps2JTS, jsts2googleMaps);
+            coords.Distance = computeTotalDistance(resp);
             callback(coords);
         });
 
         var wps = [];
         for (var i = 0; i < wayPoints.length; i++) {
-            if (wayPoints[i].obj.getPlace())
-                wps.push({ location: { 'placeId': wayPoints[i].obj.getPlace().place_id } });
+            if (wayPoints[i].obj)
+                wps.push({ location: { 'placeId': wayPoints[i].obj.place_id } });
         }
 
-        this.displayRoute({ 'placeId': fromPlace.getPlace().place_id }, { 'placeId': toPlace.getPlace().place_id }, directionsService,
+        this.displayRoute({ 'placeId': fromPlace.place_id }, { 'placeId': toPlace.place_id }, directionsService,
             directionsDisplay, wps, map);
     }
 
@@ -79,7 +85,7 @@ export class GoogleService {
         return GMcoords;
     };
 
-    private setMapVariables(resp): MapElements {
+    private setMapVariables(resp, googleMaps2JTS, jsts2googleMaps): MapElements {
         var polyline = new google.maps.Polyline({
             path: [],
             strokeColor: '#FF0000',
@@ -112,12 +118,12 @@ export class GoogleService {
         }
 
         var distance = 3 / 111.12; // Roughly 3km
-        var geoInput = this.googleMaps2JTS(overviewPath);
+        var geoInput = googleMaps2JTS(overviewPath);
         var geometryFactory = new jsts.geom.GeometryFactory();
         var shell = geometryFactory.createLineString(geoInput);
         var polygon = shell.buffer(distance);
 
-        var paths = this.jsts2googleMaps(polygon);
+        var paths = jsts2googleMaps(polygon);
         var polygonStr = "";
         for (i = 0; i < paths.length; i++)
             polygonStr += "," + paths[i].lat() + " " + paths[i].lng();
@@ -128,6 +134,9 @@ export class GoogleService {
     };
 
     private displayRoute(origin, destination, service, display, waypoints, mp): void {
+        let setMapVariables = this.setMapVariables;
+        let googleMaps2JTS = this.googleMaps2JTS;
+        let jsts2googleMaps = this.jsts2googleMaps;
         service.route({
             origin: origin,
             destination: destination,
@@ -137,8 +146,8 @@ export class GoogleService {
         }, function (response, status) {
             if (status === google.maps.DirectionsStatus.OK) {
 
-                var bounds = this.setMapVariables(response);
-                mp.fitBounds(bounds);
+                var mapElems = setMapVariables(response, googleMaps2JTS, jsts2googleMaps);
+                mp.fitBounds(mapElems.Bounds);
                 display.setDirections(response);
                 //google.maps.event.trigger(mp, 'resize');
             } else {
