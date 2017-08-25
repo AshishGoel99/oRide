@@ -10,14 +10,15 @@ import { TabsPage } from '../pages/tabs/tabs';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { RouteService } from "../pages/routeService";
 
 import { Facebook } from '@ionic-native/facebook';
 import { IonicStorageModule  } from '@ionic/storage';
 import { SideMenu } from "../pages/sideMenu/sideMenu";
 import { SettingPage } from "../pages/setting/setting";
-import { GoogleService } from "../pages/googleService";
-import { UtilityService } from "../pages/utilityService";
+import { RouteService } from "../services/routeService";
+import { GoogleService } from "../services/googleService";
+import { UtilityService } from "../services/utilityService";
+import { HttpService } from "../services/httpService";
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { UtilityService } from "../pages/utilityService";
     Storage,
     GoogleService,
     UtilityService,
+    HttpService,
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MapElements } from "./mapElements";
+import { MapElements } from "../models/mapElements";
 
 declare let jsts: any;
 @Injectable()

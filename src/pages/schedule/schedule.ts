@@ -1,7 +1,7 @@
 import { Component, OnInit, NgZone } from '@angular/core';
-import { GoogleService } from "../googleService";
-import { MapElements } from "../mapElements";
-import { UtilityService } from "../utilityService";
+import { GoogleService } from "../../services/googleService";
+import { UtilityService } from "../../services/utilityService";
+import { MapElements } from "../../models/mapElements";
 
 @Component({
   selector: 'page-schedule',

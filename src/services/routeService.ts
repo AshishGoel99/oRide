@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Route } from "./route";
+import { Route } from "../models/route";
 
 const ROUTES: Route[] = [{
     Owner: "Ashish",

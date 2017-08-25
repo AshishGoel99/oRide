@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Route } from "./route";
 import { Loading, LoadingController } from "ionic-angular";
 
 @Injectable()
