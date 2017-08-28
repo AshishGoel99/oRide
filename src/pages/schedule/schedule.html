@@ -36,7 +36,10 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-input (click)="timeSelect('go')" [(ngModel)]="schedule.goTime" placeholder="Going Time  --:--"></ion-input>
+          <ion-label>Date</ion-label>
+          <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="schedule.goTime">
+          </ion-datetime>
+          <!-- <ion-input (click)="timeSelect('go')" [(ngModel)]="schedule.goTime" placeholder="Going Time  --:--"></ion-input> -->
         </ion-col>
         <ion-col>
           <ion-input (click)="timeSelect('return')" [(ngModel)]="schedule.returnTime" placeholder="Returning Time  --:--"></ion-input>

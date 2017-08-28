@@ -5,7 +5,6 @@ import { Facebook, FacebookLoginResponse } from '@ionic-native/facebook';
 import { Storage } from '@ionic/storage';
 import { PopoverController } from 'ionic-angular';
 import { SideMenu } from "../sideMenu/sideMenu";
-import { UtilityService } from "../../services/utilityService";
 import { RouteService } from "../../services/routeService";
 import { GoogleService } from "../../services/googleService";
 import { Route } from "../../models/route";
@@ -24,7 +23,6 @@ export class HomePage implements OnInit {
   routes: Route[];
 
   constructor(public navCtrl: NavController,
-    private utilityService: UtilityService,
     private routeService: RouteService,
     private fb: Facebook, private storage: Storage,
     private popoverCtrl: PopoverController,
@@ -75,12 +73,9 @@ export class HomePage implements OnInit {
   }
 
   private searchRoutes(): void {
-    let loading = this.utilityService.showLoading();
-
     this.routeService.getRoutes(this.from, this.to)
       .then(routes => {
         this.routes = routes
-        loading.dismiss();
       });
   }
 }

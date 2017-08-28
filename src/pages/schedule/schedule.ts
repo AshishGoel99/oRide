@@ -1,7 +1,10 @@
 import { Component, OnInit, NgZone } from '@angular/core';
 import { GoogleService } from "../../services/googleService";
-import { UtilityService } from "../../services/utilityService";
+import { NotifyService } from "../../services/notifyService";
 import { MapElements } from "../../models/mapElements";
+import { HttpService } from "../../services/httpService";
+import { environment } from "../../environment";
+import { Response } from '@angular/http';
 
 @Component({
   selector: 'page-schedule',
@@ -11,11 +14,12 @@ export class SchedulePage implements OnInit {
 
   private isShowMap: boolean;
   private schedule: any;
-  private distance: string;
+  private mapsElems: MapElements;
 
   constructor(private googleService: GoogleService,
     private ngZone: NgZone,
-    private utilityService: UtilityService) {
+    private notifyService: NotifyService,
+    private httpService: HttpService) {
   }
 
   ngOnInit(): void {
@@ -59,20 +63,45 @@ export class SchedulePage implements OnInit {
     if (this.schedule.from && this.schedule.to) {
 
       this.isShowMap = true;
-      let loading = this.utilityService.showLoading();
+      this.notifyService.showLoading();
 
       this.googleService.drawMapAndGetPolygon("map", this.schedule.waypoints, this.schedule.from, this.schedule.to,
         (elems: MapElements) => {
           this.ngZone.run(() => {
             console.log(elems);
             this.schedule.distance = elems.Distance;
-            loading.dismiss();
+            this.notifyService.hideLoading();
           });
         });
     }
   }
 
   private saveSchedule(): void {
+
+    this.httpService.post(environment.endpoints.saveSchedule,
+      {
+        from: this.schedule.from,
+        to: this.schedule.to,
+        polyline: this.mapsElems.Polyline,
+        polygon: this.mapsElems.Polygon,
+        startLatLng: this.mapsElems.StartLatLng,
+        endLatLng: this.mapsElems.EndLatLng,
+        distance: this.schedule.distance,
+        goTime: this.schedule.goTime,
+        returnTime: this.schedule.returnTime,
+        scheduleType: this.schedule.scheduleType,
+        date: this.schedule.date,
+        seatsAvail: this.schedule.seatsAvail,
+        price: this.schedule.price,
+        vehicleNo: this.schedule.vehicleNo,
+        contactNo: this.schedule.ContactNo
+      })
+      .do((res: Response) => {
+
+      }, (error: any) => {
+
+      });
+
     ///Below Code executed on server side to Save.
     //     var query = "insert into Maps(Id,PolyLine,BoundE,BoundW,BoundN,BoundS,Polygon,GoTime,ReturnTime,Date,ScheduleDays,SeatsAvail,Price,ContactNo,StartLatLng,EndLatLng,Origin,Destination,VehicleNo,User_Id,CreatedOn) values({0},{1},{2},{3},{4},{5},GeomFromText('" + map.Polygon +
     //     "'),{6},{7},{8},{9},{10},{11},{12},GeomFromText('" + map.StartLatLng + "'),GeomFromText('" +

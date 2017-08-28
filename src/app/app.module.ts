@@ -12,13 +12,15 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { Facebook } from '@ionic-native/facebook';
-import { IonicStorageModule  } from '@ionic/storage';
+import { IonicStorageModule } from '@ionic/storage';
 import { SideMenu } from "../pages/sideMenu/sideMenu";
 import { SettingPage } from "../pages/setting/setting";
 import { RouteService } from "../services/routeService";
 import { GoogleService } from "../services/googleService";
-import { UtilityService } from "../services/utilityService";
 import { HttpService } from "../services/httpService";
+import { NotifyService } from "../services/notifyService";
+import { Storage } from '@ionic/storage';
+import { XHRBackend, RequestOptions, HttpModule } from "@angular/http";
 
 @NgModule({
   declarations: [
@@ -33,7 +35,8 @@ import { HttpService } from "../services/httpService";
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    HttpModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -50,11 +53,20 @@ import { HttpService } from "../services/httpService";
     SplashScreen,
     RouteService,
     Facebook,
-    Storage,
     GoogleService,
-    UtilityService,
-    HttpService,
+    NotifyService,
+    // { provide: Storage, useFactory: provideStorage },
+    {
+      provide: HttpService,
+      deps: [XHRBackend, RequestOptions, NotifyService, Storage],
+      useFactory: (backend, options, notifyService, storage) => {
+        return new HttpService(backend, options, notifyService, storage);
+      }
+    },
     { provide: ErrorHandler, useClass: IonicErrorHandler }
   ]
 })
 export class AppModule { }
+// export function provideStorage() {
+//   return new Storage({ name: 'oRide', driverOrder: ['sqlite', 'websql', 'indexeddb'] });
+// }

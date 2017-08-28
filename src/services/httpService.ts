@@ -1,21 +1,152 @@
-import { Injectable, OnInit } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Injectable } from '@angular/core';
+import {
+    Http,
+    ConnectionBackend,
+    RequestOptions,
+    RequestOptionsArgs,
+    Response,
+    Headers
+} from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/Rx';
+import { Storage } from '@ionic/storage';
+import { NotifyService } from "./notifyService";
+import { environment } from "../environment";
+
 
 @Injectable()
+export class HttpService extends Http {
 
+    constructor(
+        backend: ConnectionBackend,
+        defaultOptions: RequestOptions,
+        private notifyService: NotifyService,
+        private storage: Storage
+    ) {
+        super(backend, defaultOptions);
+    }
 
-export class HttpService implements OnInit {
+    /**
+     * Performs a request with `get` http method.
+     * @param url
+     * @param options
+     * @returns {Observable<>}
+     */
+    get(url: string, options?: RequestOptionsArgs): Observable<any> {
+        this.beforeRequest();
+        return super.get(this.getFullUrl(url), this.requestOptions(options))
+            .catch(this.onCatch)
+            .do((res: Response) => {
+                this.onSuccess(res);
+            }, (error: any) => {
+                this.onError(error);
+            })
+            .finally(() => {
+                this.onFinally();
+            });
+    }
 
-    private headers: Headers;
-    private options: RequestOptions;
+    /**
+     * Performs a request with `get` http method.
+     * @param url
+     * @param options
+     * @returns {Observable<>}
+     */
+    post(url: string, data?: any, options?: RequestOptionsArgs): Observable<any> {
+        this.beforeRequest();
+        return super.post(this.getFullUrl(url), data, this.requestOptions(options))
+            .catch(this.onCatch)
+            .do((res: Response) => {
+                this.onSuccess(res);
+            }, (error: any) => {
+                this.onError(error);
+            })
+            .finally(() => {
+                this.onFinally();
+            });
+    }
 
-    constructor() { }
+    // Implement POST, PUT, DELETE HERE
 
-    ngOnInit(): void {
-        this.headers = new Headers(
-            {
+    /**
+     * Request options.
+     * @param options
+     * @returns {RequestOptionsArgs}
+     */
+    private requestOptions(options?: RequestOptionsArgs): RequestOptionsArgs {
+        if (options == null) {
+            options = new RequestOptions();
+        }
+
+        let token = null;
+        this.storage.get("data").then(data => {
+            if (data == null)
+                token = data.token;
+        });
+
+        if (options.headers == null) {
+            options.headers = new Headers({
+                'Authorization': `bearer ${token}`,
                 'Content-Type': 'application/json'
             });
-        this.options = new RequestOptions({ headers: this.headers });
+        }
+        return options;
+    }
+
+    /**
+     * Build API url.
+     * @param url
+     * @returns {string}
+     */
+    private getFullUrl(url: string): string {
+        return environment.apiEndpoint + url;
+    }
+
+    /**
+     * Before any Request.
+     */
+    private beforeRequest(): void {
+        this.notifyService.showLoading();
+    }
+
+    /**
+     * After any request.
+     */
+    private afterRequest(): void {
+        this.notifyService.hideLoading();
+    }
+
+    /**
+     * Error handler.
+     * @param error
+     * @param caught
+     * @returns {ErrorObservable}
+     */
+    private onCatch(error: any, caught: Observable<any>): Observable<any> {
+        this.notifyService.popError();
+        return Observable.throw(error);
+    }
+
+    /**
+     * onSuccess
+     * @param res
+     */
+    private onSuccess(res: Response): void {
+        console.log(res);
+    }
+
+    /**
+     * onError
+     * @param error
+     */
+    private onError(error: any): void {
+        this.notifyService.popError();
+    }
+
+    /**
+     * onFinally
+     */
+    private onFinally(): void {
+        this.afterRequest();
     }
 }
