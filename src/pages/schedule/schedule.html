@@ -36,29 +36,66 @@
     <ion-grid>
       <ion-row>
         <ion-col>
-          <ion-label>Date</ion-label>
-          <ion-datetime displayFormat="MM/DD/YYYY" [(ngModel)]="schedule.goTime">
-          </ion-datetime>
-          <!-- <ion-input (click)="timeSelect('go')" [(ngModel)]="schedule.goTime" placeholder="Going Time  --:--"></ion-input> -->
-        </ion-col>
-        <ion-col>
-          <ion-input (click)="timeSelect('return')" [(ngModel)]="schedule.returnTime" placeholder="Returning Time  --:--"></ion-input>
+          <ion-item>
+            <ion-label>Go Time</ion-label>
+            <ion-datetime displayFormat="hh:mm A" [(ngModel)]="schedule.goTime">
+            </ion-datetime>
+          </ion-item>
         </ion-col>
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-select [(ngModel)]="schedule.scheduleType">
-            <ion-option selected value="0">Weekly</ion-option>
-            <ion-option value="1">Specific Date</ion-option>
-          </ion-select>
+          <ion-item>
+            <ion-label>Return Time</ion-label>
+            <ion-datetime displayFormat="hh:mm A" [(ngModel)]="schedule.returnTime">
+            </ion-datetime>
+          </ion-item>
         </ion-col>
-        <ion-col [hidden]="true" id="scheduleDate">
-          <ion-input (click)="dateSelect()" [(ngModel)]="schedule.date" placeholder="Date  --/--/----"></ion-input>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-item>
+            <ion-label>Schedule Type</ion-label>
+            <ion-select [(ngModel)]="schedule.scheduleType">
+              <ion-option selected value="0">Weekly</ion-option>
+              <ion-option value="1">Specific Date</ion-option>
+            </ion-select>
+          </ion-item>
+        </ion-col>
+      </ion-row>
+      <ion-row [hidden]="true">
+        <ion-col>
+          <ion-item>
+            <ion-label>Select Date</ion-label>
+            <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="schedule.date">
+            </ion-datetime>
+          </ion-item>
         </ion-col>
       </ion-row>
       <ion-row id="scheduleDays">
         <ion-col>
-          <button class="button button-float" ng-class="getClass(0)" (click)="dayClick(0)">
+          <ion-chip color="secondary" [attr.color]="getSelectedDayClass(0)" (click)="selectDay(0)">
+            <ion-label>M</ion-label>
+          </ion-chip>
+          <ion-chip [attr.color]="getSelectedDayClass(1)" (click)="selectDay(1)">
+            <ion-label>T</ion-label>
+          </ion-chip>
+          <ion-chip [attr.color]="getSelectedDayClass(2)" (click)="selectDay(2)">
+            <ion-label>W</ion-label>
+          </ion-chip>
+          <ion-chip [attr.color]="getSelectedDayClass(3)" (click)="selectDay(3)">
+            <ion-label>T</ion-label>
+          </ion-chip>
+          <ion-chip [attr.color]="getSelectedDayClass(4)" (click)="selectDay(4)">
+            <ion-label>F</ion-label>
+          </ion-chip>
+          <ion-chip [attr.color]="getSelectedDayClass(5)" (click)="selectDay(5)">
+            <ion-label>S</ion-label>
+          </ion-chip>
+          <ion-chip [attr.color]="getSelectedDayClass(6)" (click)="selectDay(6)">
+            <ion-label>S</ion-label>
+          </ion-chip>
+          <!-- <button class="button button-float" ng-class="getClass(0)" (click)="dayClick(0)">
                     <i class="icon">S</i>
                 </button>
           <button class="button button-float" ng-class="getClass(1)" (click)="dayClick(1)">
@@ -78,7 +115,7 @@
                 </button>
           <button class="button button-float" (click)="dayClick(6)" ng-class="getClass(6)">
                     <i class="icon">S</i>
-                </button>
+                </button> -->
         </ion-col>
       </ion-row>
     </ion-grid>

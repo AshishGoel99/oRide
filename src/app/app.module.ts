@@ -55,7 +55,6 @@ import { XHRBackend, RequestOptions, HttpModule } from "@angular/http";
     Facebook,
     GoogleService,
     NotifyService,
-    // { provide: Storage, useFactory: provideStorage },
     {
       provide: HttpService,
       deps: [XHRBackend, RequestOptions, NotifyService, Storage],
@@ -67,6 +66,3 @@ import { XHRBackend, RequestOptions, HttpModule } from "@angular/http";
   ]
 })
 export class AppModule { }
-// export function provideStorage() {
-//   return new Storage({ name: 'oRide', driverOrder: ['sqlite', 'websql', 'indexeddb'] });
-// }

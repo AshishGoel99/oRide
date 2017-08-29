@@ -35,7 +35,8 @@ export class SchedulePage implements OnInit {
       seatsAvail: 0,
       price: 0,
       vehicleNo: '',
-      contactNo: ''
+      contactNo: '',
+      days: []
     };
 
     this.googleService.setAutoComplete("origin", (place) => {
@@ -57,6 +58,21 @@ export class SchedulePage implements OnInit {
         });
       }, 200);
     }
+  }
+
+  private selectDay(day: number): void {
+    var index = this.schedule.days.indexOf(day);
+    if (index > -1)
+      this.schedule.days.splice(index, 1);
+    else
+      this.schedule.days.push(day);
+
+    console.log(this.schedule.days);
+  }
+
+  private getSelectedDayClass(day: number): string {
+    var index = this.schedule.days.indexOf(day);
+    return index >= -1 ? "secondary" : null;
   }
 
   private showMap(): void {
