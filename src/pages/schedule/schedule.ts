@@ -24,18 +24,7 @@ export class SchedulePage implements OnInit {
 
   ngOnInit(): void {
     this.schedule = {
-      from: null,
-      to: null,
       waypoints: [],
-      distance: null,
-      goTime: null,
-      returnTime: null,
-      scheduleType: 0,
-      date: null,
-      seatsAvail: 0,
-      price: 0,
-      vehicleNo: '',
-      contactNo: '',
       days: []
     };
 
@@ -72,7 +61,7 @@ export class SchedulePage implements OnInit {
 
   private getSelectedDayClass(day: number): string {
     var index = this.schedule.days.indexOf(day);
-    return index >= -1 ? "secondary" : null;
+    return index > -1 ? "primary" : null;
   }
 
   private showMap(): void {

@@ -63,7 +63,7 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row [hidden]="true">
+      <ion-row [hidden]="!schedule.scheduleType">
         <ion-col>
           <ion-item>
             <ion-label>Select Date</ion-label>
@@ -72,50 +72,45 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row id="scheduleDays">
+      <ion-row [hidden]="schedule.scheduleType">
         <ion-col>
-          <ion-chip color="secondary" [attr.color]="getSelectedDayClass(0)" (click)="selectDay(0)">
+        </ion-col>
+        <ion-col>
+          <ion-chip [color]="getSelectedDayClass(0)" (click)="selectDay(0)">
             <ion-label>M</ion-label>
           </ion-chip>
-          <ion-chip [attr.color]="getSelectedDayClass(1)" (click)="selectDay(1)">
+        </ion-col>
+        <ion-col>
+          <ion-chip [color]="getSelectedDayClass(1)" (click)="selectDay(1)">
             <ion-label>T</ion-label>
           </ion-chip>
-          <ion-chip [attr.color]="getSelectedDayClass(2)" (click)="selectDay(2)">
+        </ion-col>
+        <ion-col>
+          <ion-chip [color]="getSelectedDayClass(2)" (click)="selectDay(2)">
             <ion-label>W</ion-label>
           </ion-chip>
-          <ion-chip [attr.color]="getSelectedDayClass(3)" (click)="selectDay(3)">
+        </ion-col>
+        <ion-col>
+          <ion-chip [color]="getSelectedDayClass(3)" (click)="selectDay(3)">
             <ion-label>T</ion-label>
           </ion-chip>
-          <ion-chip [attr.color]="getSelectedDayClass(4)" (click)="selectDay(4)">
+        </ion-col>
+        <ion-col>
+          <ion-chip [color]="getSelectedDayClass(4)" (click)="selectDay(4)">
             <ion-label>F</ion-label>
           </ion-chip>
-          <ion-chip [attr.color]="getSelectedDayClass(5)" (click)="selectDay(5)">
+        </ion-col>
+        <ion-col>
+          <ion-chip [color]="getSelectedDayClass(5)" (click)="selectDay(5)">
             <ion-label>S</ion-label>
           </ion-chip>
-          <ion-chip [attr.color]="getSelectedDayClass(6)" (click)="selectDay(6)">
+        </ion-col>
+        <ion-col>
+          <ion-chip [color]="getSelectedDayClass(6)" (click)="selectDay(6)">
             <ion-label>S</ion-label>
           </ion-chip>
-          <!-- <button class="button button-float" ng-class="getClass(0)" (click)="dayClick(0)">
-                    <i class="icon">S</i>
-                </button>
-          <button class="button button-float" ng-class="getClass(1)" (click)="dayClick(1)">
-                    <i class="icon">M</i>
-                </button>
-          <button class="button button-float" ng-class="getClass(2)" (click)="dayClick(2)">
-                    <i class="icon">T</i>
-                </button>
-          <button class="button button-float" ng-class="getClass(3)" (click)="dayClick(3)">
-                    <i class="icon">W</i>
-                </button>
-          <button class="button button-float" ng-class="getClass(4)" (click)="dayClick(4)">
-                    <i class="icon">T</i>
-                </button>
-          <button class="button button-float" (click)="dayClick(5)" ng-class="getClass(5)">
-                    <i class="icon">F</i>
-                </button>
-          <button class="button button-float" (click)="dayClick(6)" ng-class="getClass(6)">
-                    <i class="icon">S</i>
-                </button> -->
+        </ion-col>
+        <ion-col>
         </ion-col>
       </ion-row>
     </ion-grid>
