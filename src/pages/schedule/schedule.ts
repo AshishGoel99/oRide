@@ -74,6 +74,7 @@ export class SchedulePage implements OnInit {
         (elems: MapElements) => {
           this.ngZone.run(() => {
             console.log(elems);
+            this.mapsElems = elems;
             this.schedule.distance = elems.Distance;
             this.notifyService.hideLoading();
           });
@@ -85,21 +86,30 @@ export class SchedulePage implements OnInit {
 
     this.httpService.post(environment.endpoints.saveSchedule,
       {
-        from: this.schedule.from,
-        to: this.schedule.to,
+        from: {
+          latLng: this.mapsElems.StartLatLng,
+          name: this.schedule.from
+        },
+        to: {
+          latLng: this.mapsElems.EndLatLng,
+          name: this.schedule.to
+        },
         polyline: this.mapsElems.Polyline,
         polygon: this.mapsElems.Polygon,
-        startLatLng: this.mapsElems.StartLatLng,
-        endLatLng: this.mapsElems.EndLatLng,
-        distance: this.schedule.distance,
+        // distance: this.schedule.distance,
         goTime: this.schedule.goTime,
         returnTime: this.schedule.returnTime,
         scheduleType: this.schedule.scheduleType,
+        days: this.schedule.days,
         date: this.schedule.date,
         seatsAvail: this.schedule.seatsAvail,
-        price: this.schedule.price,
+        fare: this.schedule.price,
         vehicleNo: this.schedule.vehicleNo,
-        contactNo: this.schedule.ContactNo
+        contactNo: this.schedule.ContactNo,
+        waypoints: this.schedule.waypoints.map((c, i) => {
+          return c.location;
+        }),
+        bounds: this.mapsElems.Bounds.toJSON()
       })
       .do((res: Response) => {
 
