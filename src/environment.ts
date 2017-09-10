@@ -1,7 +1,9 @@
 export const environment = {
     production: false,
-    apiEndpoint: 'http://example.com/api/',
+    apiEndpoint: 'http://localhost:5000/api/',
+    dataKey: "userData",
     endpoints: {
-        saveSchedule: ""
+        saveSchedule: "Rides",
+        userLogin: "SignIn"
     }
 };

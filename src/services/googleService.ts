@@ -43,8 +43,8 @@ export class GoogleService {
 
         var wps = [];
         for (var i = 0; i < wayPoints.length; i++) {
-            if (wayPoints[i].obj)
-                wps.push({ location: { 'placeId': wayPoints[i].obj.place_id } });
+            if (wayPoints[i].place)
+                wps.push({ location: { 'placeId': wayPoints[i].place.place_id } });
         }
 
         this.displayRoute({ 'placeId': fromPlace.place_id }, { 'placeId': toPlace.place_id }, directionsService,

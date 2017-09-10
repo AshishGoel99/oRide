@@ -29,8 +29,8 @@
 
   <div id="map" class="map" data-tap-disabled="true" [hidden]="!isShowMap"></div>
   <div [hidden]="!isShowMap"><br><b>Total Distance : </b>{{schedule.distance}} </div><br>
-  <ion-list>
-    <ion-item-divider text-center>
+  <ion-list text-center>
+    <ion-item-divider>
       Schedule
     </ion-item-divider>
     <ion-grid>
@@ -56,14 +56,14 @@
         <ion-col>
           <ion-item>
             <ion-label>Schedule Type</ion-label>
-            <ion-select [(ngModel)]="schedule.scheduleType">
+            <ion-select [(ngModel)]="schedule.scheduleType" interface="popover">
               <ion-option selected value="0">Weekly</ion-option>
               <ion-option value="1">Specific Date</ion-option>
             </ion-select>
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row [hidden]="!schedule.scheduleType">
+      <ion-row [hidden]="schedule.scheduleType==0">
         <ion-col>
           <ion-item>
             <ion-label>Select Date</ion-label>
@@ -72,9 +72,7 @@
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row [hidden]="schedule.scheduleType">
-        <ion-col>
-        </ion-col>
+      <ion-row [hidden]="schedule.scheduleType==1">
         <ion-col>
           <ion-chip [color]="getSelectedDayClass(0)" (click)="selectDay(0)">
             <ion-label>M</ion-label>
@@ -100,6 +98,11 @@
             <ion-label>F</ion-label>
           </ion-chip>
         </ion-col>
+      </ion-row>
+      <ion-row [hidden]="schedule.scheduleType==1">
+        <ion-col></ion-col>
+        <ion-col></ion-col>
+        <ion-col></ion-col>
         <ion-col>
           <ion-chip [color]="getSelectedDayClass(5)" (click)="selectDay(5)">
             <ion-label>S</ion-label>
@@ -110,12 +113,12 @@
             <ion-label>S</ion-label>
           </ion-chip>
         </ion-col>
-        <ion-col>
-        </ion-col>
+        <!-- <ion-col>
+        </ion-col> -->
       </ion-row>
     </ion-grid>
     <br>
-    <ion-item-divider text-center>
+    <ion-item-divider>
       Availability
     </ion-item-divider>
     <ion-grid>
@@ -138,7 +141,7 @@
         </ion-col>
       </ion-row>
       <ion-row>
-        <ion-col text-center>
+        <ion-col>
           <button (click)="saveSchedule()" ion-button color="positive">Save</button>
         </ion-col>
       </ion-row>

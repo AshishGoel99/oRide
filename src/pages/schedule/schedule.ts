@@ -25,7 +25,8 @@ export class SchedulePage implements OnInit {
   ngOnInit(): void {
     this.schedule = {
       waypoints: [],
-      days: []
+      days: [],
+      scheduleType: 0
     };
 
     this.googleService.setAutoComplete("origin", (place) => {
@@ -70,8 +71,8 @@ export class SchedulePage implements OnInit {
       this.isShowMap = true;
       this.notifyService.showLoading();
 
-      this.googleService.drawMapAndGetPolygon("map", this.schedule.waypoints, this.schedule.from, this.schedule.to,
-        (elems: MapElements) => {
+      this.googleService.drawMapAndGetPolygon("map", this.schedule.waypoints,
+        this.schedule.from, this.schedule.to, (elems: MapElements) => {
           this.ngZone.run(() => {
             console.log(elems);
             this.mapsElems = elems;
@@ -105,16 +106,20 @@ export class SchedulePage implements OnInit {
         seatsAvail: this.schedule.seatsAvail,
         fare: this.schedule.price,
         vehicleNo: this.schedule.vehicleNo,
-        contactNo: this.schedule.ContactNo,
+        contactNo: this.schedule.contactNo,
         waypoints: this.schedule.waypoints.map((c, i) => {
-          return c.location;
+          return c.place.formatted_address;
         }),
         bounds: this.mapsElems.Bounds.toJSON()
       })
-      .do((res: Response) => {
-
-      }, (error: any) => {
-
+      .subscribe(
+      response => {
+        // Emit list event
+        console.log(response)
+      },
+      err => {
+        // Log errors if any
+        console.log(err);
       });
 
     ///Below Code executed on server side to Save.

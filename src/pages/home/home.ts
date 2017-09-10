@@ -8,6 +8,19 @@ import { SideMenu } from "../sideMenu/sideMenu";
 import { RouteService } from "../../services/routeService";
 import { GoogleService } from "../../services/googleService";
 import { Route } from "../../models/route";
+import { HttpService } from '../../services/httpService';
+import { environment } from '../../environment';
+
+
+export class UserData {
+  email: string;
+  first_name: string;
+  picture: string;
+  username: string;
+  userId: string;
+  fbToken: string;
+  apiToken?: string;
+}
 
 @Component({
   selector: 'page-home',
@@ -21,17 +34,19 @@ export class HomePage implements OnInit {
   fromPlace: any;
   toPlace: any;
   routes: Route[];
+  userData: UserData;
 
   constructor(public navCtrl: NavController,
     private routeService: RouteService,
     private fb: Facebook, private storage: Storage,
     private popoverCtrl: PopoverController,
-    private googleService: GoogleService) {
+    private googleService: GoogleService,
+    private httpService: HttpService) {
   }
 
   ngOnInit() {
 
-    this.storage.get("data").then(data => {
+    this.storage.get(environment.dataKey).then(data => {
       if (data == null)
         this.userLogin();
     });
@@ -45,15 +60,27 @@ export class HomePage implements OnInit {
   }
 
   private userLogin(): void {
-    this.fb.login(['public_profile', 'user_friends', 'email'])
+    this.fb.login(['public_profile', 'email'])
       .then((res: FacebookLoginResponse) => {
         console.log('Logged into Facebook!', res);
         if (res.status == 'ok') {
-          var token = this.addUser(res.authResponse.userID);
-          //caching the token info
-          this.storage.set("data", {
-            token: token,
-            userId: res.authResponse.userID
+
+          this.fb.api('me?fields=id,name,email,first_name,picture.width(720).height(720).as(picture_large)', []).then(profile => {
+            this.userData = {
+              email: profile['email'], first_name: profile['first_name'],
+              picture: profile['picture_large']['data']['url'], username: profile['name'],
+              userId: res.authResponse.userID, fbToken: res.authResponse.accessToken
+            };
+
+            this.addUser(this.userData, (res) => {
+              if (res.success) {
+                this.userData.apiToken = res.token;
+                this.storage.set(environment.dataKey, this.userData);
+              }
+              else {
+
+              }
+            });
           });
         }
       })
@@ -61,8 +88,16 @@ export class HomePage implements OnInit {
   }
 
   //add user to System
-  addUser(userId: string): string {
-    return "";
+  addUser(data: UserData, callback: (r: any) => void): void {
+    this.httpService.post(environment.endpoints.userLogin, data)
+      .subscribe(
+      response => {
+        callback(response.ok);
+      },
+      err => {
+        // Log errors if any
+        console.log(err);
+      });
   }
 
   private presentMenu(myEvent): void {

@@ -12,6 +12,7 @@ import 'rxjs/Rx';
 import { Storage } from '@ionic/storage';
 import { NotifyService } from "./notifyService";
 import { environment } from "../environment";
+import { UserData } from '../pages/home/home';
 
 
 @Injectable()
@@ -78,10 +79,10 @@ export class HttpService extends Http {
             options = new RequestOptions();
         }
 
-        let token = null;
-        this.storage.get("data").then(data => {
-            if (data == null)
-                token = data.token;
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBc2hpc2giLCJlbWFpbCI6ImFzaGlzaC5nb2VsOTlAeWFob28uY29tIiwibmFtZWlkIjoiYzY0YTcyYWEtNzMwMS00YzlkLTgzN2QtN2Q0MTU4ZWM2Y2M2IiwiZXhwIjoxNTA1MDYwNjc5LCJpc3MiOiJvUmlkZSIsImF1ZCI6InBhc3NlbmdlcnMifQ.-6zT0KqIFdpegroLVeOgiSYqSkwjdvq9bD3Umw-NV-k";//null;
+        this.storage.get(environment.dataKey).then((data: UserData) => {
+            if (data != null)
+                token = data.apiToken;
         });
 
         if (options.headers == null) {
