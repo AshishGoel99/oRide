@@ -21,6 +21,7 @@ import { HttpService } from "../services/httpService";
 import { NotifyService } from "../services/notifyService";
 import { Storage } from '@ionic/storage';
 import { XHRBackend, RequestOptions, HttpModule } from "@angular/http";
+import { LoginPage } from '../pages/login/login';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { XHRBackend, RequestOptions, HttpModule } from "@angular/http";
     HomePage,
     TabsPage,
     SideMenu,
-    SettingPage
+    SettingPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
@@ -43,6 +45,7 @@ import { XHRBackend, RequestOptions, HttpModule } from "@angular/http";
     MyApp,
     SchedulePage,
     ContactPage,
+    LoginPage,
     HomePage,
     TabsPage,
     SideMenu,

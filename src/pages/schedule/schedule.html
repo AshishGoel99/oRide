@@ -55,7 +55,7 @@
       <ion-row>
         <ion-col>
           <ion-item>
-            <ion-label>Schedule Type</ion-label>
+            <ion-label>Frequency</ion-label>
             <ion-select [(ngModel)]="schedule.scheduleType" interface="popover">
               <ion-option selected value="0">Weekly</ion-option>
               <ion-option value="1">Specific Date</ion-option>
@@ -113,8 +113,6 @@
             <ion-label>S</ion-label>
           </ion-chip>
         </ion-col>
-        <!-- <ion-col>
-        </ion-col> -->
       </ion-row>
     </ion-grid>
     <br>
@@ -132,14 +130,13 @@
       </ion-row>
       <ion-row>
         <ion-col>
-          <ion-input [(ngModel)]="schedule.vehicleNo" placeholder="Vehicle No"></ion-input>
+          <ion-input [(ngModel)]="schedule.vehicleNo" placeholder="Vehicle"></ion-input>
         </ion-col>
-      </ion-row>
-      <ion-row>
         <ion-col>
-          <ion-input type="tel" [(ngModel)]="schedule.contactNo" placeholder="Contact No"></ion-input>
+          <ion-input type="tel" [(ngModel)]="schedule.contactNo" placeholder="Contact"></ion-input>
         </ion-col>
       </ion-row>
+      <br>
       <ion-row>
         <ion-col>
           <button (click)="saveSchedule()" ion-button color="positive">Save</button>

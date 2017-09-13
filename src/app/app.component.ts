@@ -1,22 +1,39 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
+import { Storage } from '@ionic/storage';
 import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { TabsPage } from '../pages/tabs/tabs';
+import { environment } from '../environment';
+import { LoginPage } from '../pages/login/login';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = TabsPage;
+  @ViewChild(Nav) nav;
+  rootPage: any = TabsPage;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  constructor(platform: Platform, statusBar: StatusBar,
+    splashScreen: SplashScreen,
+    private storage: Storage) {
+
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
+      let env = this;
+
+      this.storage.get(environment.dataKey)
+        .then(function (data) {
+          if (data != null) {
+            //we don't have the user data so we will ask him to log in
+            env.nav.push(LoginPage);
+          }
+
+          splashScreen.hide();
+          statusBar.styleDefault();
+        });
     });
   }
 }

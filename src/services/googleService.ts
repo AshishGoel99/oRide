@@ -37,7 +37,7 @@ export class GoogleService {
         directionsDisplay.addListener('directions_changed', function () {
             var resp = directionsDisplay.getDirections();
             let coords: MapElements = setMapVariables(resp, googleMaps2JTS, jsts2googleMaps);
-            coords.Distance = computeTotalDistance(resp);
+            coords.distance = computeTotalDistance(resp);
             callback(coords);
         });
 
@@ -106,9 +106,9 @@ export class GoogleService {
         }
         var mapElems = new MapElements();
         var polyLinePath = polyline.getPath();
-        mapElems.Polyline = google.maps.geometry.encoding.encodePath(polyLinePath);
-        mapElems.StartLatLng = "POINT" + polyLinePath.getAt(0).toString().replace(',', '');
-        mapElems.EndLatLng = "POINT" + polyLinePath.getAt(polyLinePath.getLength() - 1).toString().replace(',', '');
+        mapElems.polyline = google.maps.geometry.encoding.encodePath(polyLinePath);
+        mapElems.startLatLng = "POINT" + polyLinePath.getAt(0).toString().replace(',', '');
+        mapElems.endLatLng = "POINT" + polyLinePath.getAt(polyLinePath.getLength() - 1).toString().replace(',', '');
 
         var overviewPath = resp.routes[0].overview_path,
             overviewPathGeo = [];
@@ -128,8 +128,8 @@ export class GoogleService {
         for (i = 0; i < paths.length; i++)
             polygonStr += "," + paths[i].lat() + " " + paths[i].lng();
 
-        mapElems.Polygon = "POLYGON((" + polygonStr.substr(1) + "))";
-        mapElems.Bounds = bounds;
+        mapElems.polygon = "POLYGON((" + polygonStr.substr(1) + "))";
+        mapElems.latLngBounds = bounds;
         return mapElems;
     };
 
@@ -147,7 +147,7 @@ export class GoogleService {
             if (status === google.maps.DirectionsStatus.OK) {
 
                 var mapElems = setMapVariables(response, googleMaps2JTS, jsts2googleMaps);
-                mp.fitBounds(mapElems.Bounds);
+                mp.fitBounds(mapElems.latLngBounds);
                 display.setDirections(response);
                 //google.maps.event.trigger(mp, 'resize');
             } else {

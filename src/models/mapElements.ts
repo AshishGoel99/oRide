@@ -1,8 +1,8 @@
 export class MapElements {
-    Distance: any;
-    Bounds: google.maps.LatLngBounds;
-    Polygon: string;
-    EndLatLng: string;
-    StartLatLng: string;
-    Polyline: string;
+    distance: string;
+    latLngBounds?: google.maps.LatLngBounds;
+    polygon: string;
+    endLatLng?: string;
+    startLatLng?: string;
+    polyline: string;
 }

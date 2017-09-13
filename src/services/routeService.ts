@@ -1,28 +1,46 @@
 import { Injectable } from '@angular/core';
 import { Route } from "../models/route";
+import { HttpService } from './httpService';
+import { environment } from '../environment';
+import { Observable } from 'rxjs/Observable';
 
-const ROUTES: Route[] = [{
-    Owner: "Ashish",
-    Duration: 2,
-    From: "Hapur",
-    StartTime: "07:30",
-    To: "Sector 144, Noida",
-    Fare: 50,
-    Vehicle: "WagonR"
-},
-{
-    Owner: "Ashish",
-    Duration: 2,
-    From: "Hapur",
-    StartTime: "07:30",
-    To: "Sector 144, Noida",
-    Fare: 50
-}];
+// const ROUTES: Route[] = [{
+//     owner: "Ashish",
+//     duration: 2,
+//     from: "Hapur",
+//     startTime: "07:30",
+//     to: "Sector 144, Noida",
+//     fare: 50,
+//     vehicle: "WagonR"
+
+// },
+// {
+//     owner: "Ashish",
+//     duration: 2,
+//     from: "Hapur",
+//     startTime: "07:30",
+//     to: "Sector 144, Noida",
+//     fare: 50
+// }];
 
 @Injectable()
 export class RouteService {
 
+    constructor(
+        private httpService: HttpService
+    ) { }
+
     getRoutes(from: String, to: String): Promise<Route[]> {
-        return Promise.resolve(ROUTES);
+
+        return Promise.resolve(null);
+
+        //this.httpService.get(, )
+    }
+
+    save(data: Route): Observable<any> {
+        return this.httpService.post(environment.endpoints.saveSchedule,
+            {
+
+            });
     }
 }
