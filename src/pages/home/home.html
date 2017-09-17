@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title text-center>Home</ion-title>
+    <ion-title text-center>ORide</ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="presentMenu($event)">
         <ion-icon name="more"></ion-icon>
@@ -9,11 +9,21 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  <ion-searchbar placeholder="From" id="from" animated="true" [(ngModel)]="from">
-  </ion-searchbar>
+<ion-content padding text-center>
+  <ion-searchbar placeholder="From" id="from" animated="true" [(ngModel)]="from"></ion-searchbar>
   <ion-searchbar placeholder="To" id="to" [(ngModel)]="to" animated="true"></ion-searchbar>
-  <div padding text-center>
+  <br>
+  <ion-item>
+    <ion-label fixed>In next (hrs)</ion-label>
+    <ion-input type="number" [(ngModel)]="frame"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label>Depart at</ion-label>
+    <ion-datetime min="{{minDate}}" max="{{maxDate}}" displayFormat="MMM DD, YYYY hh:mm" [(ngModel)]="date">
+    </ion-datetime>
+  </ion-item>
+  <br>
+  <div text-center>
     <button (click)="searchRoutes()" ion-button small color="light">Find Routes</button>
   </div>
   <ion-card *ngFor="let route of routes">
@@ -21,28 +31,28 @@
       <!-- <ion-avatar item-start>
         <img src="img/marty-avatar.png">
       </ion-avatar> -->
-      <h5>{{route.Owner}}</h5>
+      <h5>{{route.owner}}</h5>
     </ion-item>
 
     <!-- <img src="img/advance-card-bttf.png"> -->
 
     <ion-card-content>
-      <p>{{route.Note}}</p>
+      <p>{{route.note}}</p>
     </ion-card-content>
 
     <ion-item>
       <ion-icon isActive="true" name="pin" item-start></ion-icon>
-      <p>{{route.From}}</p>
+      <p>{{route.from.name}}</p>
     </ion-item>
 
     <ion-item>
       <ion-icon name="pin" item-right></ion-icon>
-      <p>{{route.To}}</p>
+      <p>{{route.to.name}}</p>
     </ion-item>
     <ion-item>
-      <span item-left>{{route.Duration}} hr</span>
-      <span item-middle>({{route.Vehicle}})</span>
-      <span item-right>{{route.Fare | currency:'INR':true:'1.0-0'}}</span>
+      <span item-left>{{route.duration}} hr</span>
+      <span item-middle>({{route.vehicle}})</span>
+      <span item-right>{{route.fare | currency:'INR':true:'1.0-0'}}</span>
     </ion-item>
 
     <ion-row>
@@ -59,6 +69,5 @@
         </button>
       </ion-col>
     </ion-row>
-
   </ion-card>
 </ion-content>

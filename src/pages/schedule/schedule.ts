@@ -5,6 +5,7 @@ import { MapElements } from "../../models/mapElements";
 import { environment } from "../../environment";
 import { Response } from '@angular/http';
 import { RouteService } from '../../services/routeService';
+import { DateTimeService } from '../../services/datetimeService';
 
 @Component({
   selector: 'page-schedule',
@@ -12,13 +13,17 @@ import { RouteService } from '../../services/routeService';
 })
 export class SchedulePage implements OnInit {
 
+  private maxDate: string;
+  private minDate: string;
+
   private isShowMap: boolean;
   private schedule: any;
 
   constructor(private googleService: GoogleService,
     private ngZone: NgZone,
     private notifyService: NotifyService,
-    private routeService: RouteService) {
+    private routeService: RouteService,
+    private dateService: DateTimeService) {
   }
 
   ngOnInit(): void {
@@ -39,6 +44,11 @@ export class SchedulePage implements OnInit {
     this.googleService.setAutoComplete("destination", (place) => {
       this.schedule.to = place;
     });
+
+    let now = new Date();
+    this.minDate = this.dateService.ToLocalDate(now);
+    now.setMonth(now.getMonth() + 2);
+    this.maxDate = this.dateService.ToLocalDate(now);
   }
 
   private addWayPoint(): void {
@@ -106,7 +116,7 @@ export class SchedulePage implements OnInit {
         returnTime: this.schedule.returnTime,
         scheduleType: this.schedule.scheduleType,
         days: this.schedule.days,
-        date: this.schedule.date,
+        date: this.dateService.ToUtc(this.schedule.date),
         seatsAvail: this.schedule.seatsAvail,
         fare: this.schedule.price,
         vehicle: this.schedule.vehicleNo,

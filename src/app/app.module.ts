@@ -22,6 +22,7 @@ import { NotifyService } from "../services/notifyService";
 import { Storage } from '@ionic/storage';
 import { XHRBackend, RequestOptions, HttpModule } from "@angular/http";
 import { LoginPage } from '../pages/login/login';
+import { DateTimeService } from '../services/datetimeService';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { LoginPage } from '../pages/login/login';
     Facebook,
     GoogleService,
     NotifyService,
+    DateTimeService,
     {
       provide: HttpService,
       deps: [XHRBackend, RequestOptions, NotifyService, Storage],

@@ -14,10 +14,8 @@ export class LoginPage {
     userData: UserData;
 
     constructor(
-        public navCtrl: NavController,
-        public fb: Facebook,
-        private storage: Storage,
-        private httpService: HttpService
+        public navCtrl: NavController, public fb: Facebook,
+        private storage: Storage, private httpService: HttpService
     ) {
     }
 
@@ -33,9 +31,9 @@ export class LoginPage {
 
                     this.fb.api('me?fields=id,name,email,first_name', []).then(profile => {
                         this.userData = {
-                            email: profile['email'], first_name: profile['first_name'],
+                            email: profile['email'], firstName: profile['first_name'],
                             picture: "https://graph.facebook.com/" + res.authResponse.userID + "/picture?type=large",
-                            username: profile['name'], userId: res.authResponse.userID,
+                            username: profile['name'], fbId: res.authResponse.userID,
                             fbToken: res.authResponse.accessToken
                         };
 

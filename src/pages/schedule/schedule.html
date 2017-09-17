@@ -67,7 +67,7 @@
         <ion-col>
           <ion-item>
             <ion-label>Select Date</ion-label>
-            <ion-datetime displayFormat="MMM DD, YYYY" [(ngModel)]="schedule.date">
+            <ion-datetime min="{{minDate}}" max="{{maxDate}}" displayFormat="MMM DD, YYYY" [(ngModel)]="schedule.date">
             </ion-datetime>
           </ion-item>
         </ion-col>

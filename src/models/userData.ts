@@ -1,9 +1,9 @@
 export class UserData {
     email: string;
-    first_name: string;
+    firstName: string;
     picture: string;
     username: string;
-    userId: string;
+    fbId: string;
     fbToken: string;
     apiToken?: string;
 }
