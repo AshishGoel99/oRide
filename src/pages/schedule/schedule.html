@@ -6,7 +6,7 @@
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content padding text-center>
   <ion-list>
     <ion-searchbar id="origin" placeholder="From" animated="true">
     </ion-searchbar>
@@ -22,126 +22,15 @@
     </div>
   </ion-list>
 
-  <div text-center>
+  <div>
     <button (click)="showMap()" ion-button small color="light">See Map</button>
   </div>
   <br>
 
   <div id="map" class="map" data-tap-disabled="true" [hidden]="!isShowMap"></div>
-  <div [hidden]="!isShowMap"><br><b>Total Distance : </b>{{schedule.distance}} </div><br>
-  <ion-list text-center>
-    <ion-item-divider>
-      Schedule
-    </ion-item-divider>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label>Go Time</ion-label>
-            <ion-datetime displayFormat="hh:mm A" [(ngModel)]="schedule.goTime">
-            </ion-datetime>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label>Return Time</ion-label>
-            <ion-datetime displayFormat="hh:mm A" [(ngModel)]="schedule.returnTime">
-            </ion-datetime>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-item>
-            <ion-label>Frequency</ion-label>
-            <ion-select [(ngModel)]="schedule.scheduleType" interface="popover">
-              <ion-option selected value="0">Weekly</ion-option>
-              <ion-option value="1">Specific Date</ion-option>
-            </ion-select>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row [hidden]="schedule.scheduleType==0">
-        <ion-col>
-          <ion-item>
-            <ion-label>Select Date</ion-label>
-            <ion-datetime min="{{minDate}}" max="{{maxDate}}" displayFormat="MMM DD, YYYY" [(ngModel)]="schedule.date">
-            </ion-datetime>
-          </ion-item>
-        </ion-col>
-      </ion-row>
-      <ion-row [hidden]="schedule.scheduleType==1">
-        <ion-col>
-          <ion-chip [color]="getSelectedDayClass(0)" (click)="selectDay(0)">
-            <ion-label>M</ion-label>
-          </ion-chip>
-        </ion-col>
-        <ion-col>
-          <ion-chip [color]="getSelectedDayClass(1)" (click)="selectDay(1)">
-            <ion-label>T</ion-label>
-          </ion-chip>
-        </ion-col>
-        <ion-col>
-          <ion-chip [color]="getSelectedDayClass(2)" (click)="selectDay(2)">
-            <ion-label>W</ion-label>
-          </ion-chip>
-        </ion-col>
-        <ion-col>
-          <ion-chip [color]="getSelectedDayClass(3)" (click)="selectDay(3)">
-            <ion-label>T</ion-label>
-          </ion-chip>
-        </ion-col>
-        <ion-col>
-          <ion-chip [color]="getSelectedDayClass(4)" (click)="selectDay(4)">
-            <ion-label>F</ion-label>
-          </ion-chip>
-        </ion-col>
-      </ion-row>
-      <ion-row [hidden]="schedule.scheduleType==1">
-        <ion-col></ion-col>
-        <ion-col></ion-col>
-        <ion-col></ion-col>
-        <ion-col>
-          <ion-chip [color]="getSelectedDayClass(5)" (click)="selectDay(5)">
-            <ion-label>S</ion-label>
-          </ion-chip>
-        </ion-col>
-        <ion-col>
-          <ion-chip [color]="getSelectedDayClass(6)" (click)="selectDay(6)">
-            <ion-label>S</ion-label>
-          </ion-chip>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-    <br>
-    <ion-item-divider>
-      Availability
-    </ion-item-divider>
-    <ion-grid>
-      <ion-row>
-        <ion-col>
-          <ion-input type="number" [(ngModel)]="schedule.seatsAvail" placeholder="Seats"></ion-input>
-        </ion-col>
-        <ion-col>
-          <ion-input type="number" [(ngModel)]="schedule.price" placeholder="Fare/s"></ion-input>
-        </ion-col>
-      </ion-row>
-      <ion-row>
-        <ion-col>
-          <ion-input [(ngModel)]="schedule.vehicleNo" placeholder="Vehicle"></ion-input>
-        </ion-col>
-        <ion-col>
-          <ion-input type="tel" [(ngModel)]="schedule.contactNo" placeholder="Contact"></ion-input>
-        </ion-col>
-      </ion-row>
-      <br>
-      <ion-row>
-        <ion-col>
-          <button (click)="saveSchedule()" ion-button color="positive">Save</button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-list>
+  <div [hidden]="!isShowMap"><br><b>Total Distance : </b>{{schedule.distance}} </div><br><br>
+
+  <div>
+    <button (click)="next()" ion-button right small color="primary">Next</button>
+  </div>
 </ion-content>

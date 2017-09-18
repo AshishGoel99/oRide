@@ -23,6 +23,8 @@ import { Storage } from '@ionic/storage';
 import { XHRBackend, RequestOptions, HttpModule } from "@angular/http";
 import { LoginPage } from '../pages/login/login';
 import { DateTimeService } from '../services/datetimeService';
+import { RoutePage } from '../pages/routes/route';
+import { SchedulePage2 } from '../pages/schedule/schedule2';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { DateTimeService } from '../services/datetimeService';
     TabsPage,
     SideMenu,
     SettingPage,
-    LoginPage
+    LoginPage,
+    RoutePage,
+    SchedulePage2
   ],
   imports: [
     BrowserModule,
@@ -50,7 +54,9 @@ import { DateTimeService } from '../services/datetimeService';
     HomePage,
     TabsPage,
     SideMenu,
-    SettingPage
+    SettingPage,
+    RoutePage,
+    SchedulePage2
   ],
   providers: [
     StatusBar,
