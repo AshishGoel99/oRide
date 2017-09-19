@@ -1,9 +1,6 @@
-import { Component, OnInit, NgZone } from '@angular/core';
-import { GoogleService } from "../../services/googleService";
-import { NotifyService } from "../../services/notifyService";
+import { Component, OnInit } from '@angular/core';
 import { MapElements } from "../../models/mapElements";
 import { environment } from "../../environment";
-import { Response } from '@angular/http';
 import { RouteService } from '../../services/routeService';
 import { DateTimeService } from '../../services/datetimeService';
 import { NavController, NavParams } from 'ionic-angular';
@@ -99,10 +96,22 @@ export class SchedulePage2 implements OnInit {
             response => {
                 // Emit list event
                 console.log(response);
-                this.storage.set(environment.routeDataKey, env.schedule)
-                    .then(function () {
-                        env.nav.pop();
+                this.storage.get(environment.routeDataKey)
+                    .then(value => {
+
+                        let data = [route];
+                        if (value != null) {
+                            value.forEach(element => {
+                                data.push(element);
+                            });
+                        }
+
+                        this.storage.set(environment.routeDataKey, data)
+                            .then(function () {
+                                env.nav.popToRoot();
+                            });
                     });
+
             },
             err => {
                 // Log errors if any

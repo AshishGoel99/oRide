@@ -1,0 +1,66 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title text-center>
+            Search
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-card *ngIf="routes==null || routes.length==0">
+
+        <ion-card-header>
+            Oops! No Route Found
+        </ion-card-header>
+
+        <ion-card-content>
+            No route found in your search criteria. Go back and modify search.
+        </ion-card-content>
+
+    </ion-card>
+
+    <ion-card *ngFor="let route of routes" (click)="viewRoute(route)">
+        <ion-item text-center>
+            <!-- <ion-avatar item-start>
+            <img src="img/marty-avatar.png">
+          </ion-avatar> -->
+            <h5>{{route.owner}}</h5>
+        </ion-item>
+
+        <!-- <img src="img/advance-card-bttf.png"> -->
+
+        <ion-card-content>
+            <p>{{route.note}}</p>
+        </ion-card-content>
+
+        <ion-item>
+            <ion-icon isActive="true" name="pin" item-start></ion-icon>
+            <p>{{route.from.name}}</p>
+        </ion-item>
+
+        <ion-item>
+            <ion-icon name="pin" item-right></ion-icon>
+            <p>{{route.to.name}}</p>
+        </ion-item>
+        <ion-item>
+            <span item-left>{{route.duration}} hr</span>
+            <span item-middle>({{route.vehicle}})</span>
+            <span item-right>{{route.fare | currency:'INR':true:'1.0-0'}}</span>
+        </ion-item>
+
+        <ion-row>
+            <ion-col>
+                <button ion-button icon-left clear small>
+              <ion-icon name="thumbs-up"></ion-icon>
+              <div>12 Likes</div>
+            </button>
+            </ion-col>
+            <ion-col>
+                <button ion-button icon-left clear small>
+              <ion-icon name="text"></ion-icon>
+              <div>4 Comments</div>
+            </button>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+</ion-content>

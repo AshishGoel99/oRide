@@ -6,8 +6,12 @@ import { SideMenu } from "../sideMenu/sideMenu";
 import { RouteService } from "../../services/routeService";
 import { GoogleService } from "../../services/googleService";
 import { Route } from "../../models/route";
-import { HttpService } from '../../services/httpService';
+// import { HttpService } from '../../services/httpService';
 import { DateTimeService } from '../../services/datetimeService';
+import { ViewRoutePage } from '../routes/viewRoute';
+import { Storage } from '@ionic/storage';
+import { environment } from '../../environment';
+import { RouteSearchResultPage } from '../routes/routeSearchResult';
 
 
 @Component({
@@ -24,7 +28,6 @@ export class HomePage implements OnInit {
   private to: string;
   private fromPlace: any;
   private toPlace: any;
-  private routes: Route[];
   private frame: number;
   private date: string;
 
@@ -32,7 +35,8 @@ export class HomePage implements OnInit {
     private routeService: RouteService,
     private popoverCtrl: PopoverController,
     private googleService: GoogleService,
-    private dateService: DateTimeService) {
+    private dateService: DateTimeService,
+    private storage: Storage) {
   }
 
   ngOnInit() {
@@ -62,10 +66,18 @@ export class HomePage implements OnInit {
   }
 
   private searchRoutes(): void {
-    this.routeService.getRoutes(this.from, this.to, this.frame,
-        this.dateService.ToUtc(this.date))
-      .then(routes => {
-        this.routes = routes
+    //for testing only
+    let env = this;
+    this.storage.get(environment.routeDataKey)
+      .then(function (data) {
+        env.navCtrl.push(RouteSearchResultPage, { routes: data });
+        console.log(data);
       });
+
+    // this.routeService.getRoutes(this.from, this.to, this.frame,
+    //   this.dateService.ToUtc(this.date))
+    //   .then(routes => {
+    //     env.navCtrl.push(RouteSearchResultPage, { routes: routes });
+    //   });
   }
 }

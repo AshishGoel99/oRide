@@ -25,6 +25,8 @@ import { LoginPage } from '../pages/login/login';
 import { DateTimeService } from '../services/datetimeService';
 import { RoutePage } from '../pages/routes/route';
 import { SchedulePage2 } from '../pages/schedule/schedule2';
+import { ViewRoutePage } from '../pages/routes/viewRoute';
+import { RouteSearchResultPage } from '../pages/routes/routeSearchResult';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,9 @@ import { SchedulePage2 } from '../pages/schedule/schedule2';
     SettingPage,
     LoginPage,
     RoutePage,
-    SchedulePage2
+    SchedulePage2,
+    ViewRoutePage,
+    RouteSearchResultPage
   ],
   imports: [
     BrowserModule,
@@ -56,7 +60,9 @@ import { SchedulePage2 } from '../pages/schedule/schedule2';
     SideMenu,
     SettingPage,
     RoutePage,
-    SchedulePage2
+    SchedulePage2,
+    ViewRoutePage,
+    RouteSearchResultPage
   ],
   providers: [
     StatusBar,

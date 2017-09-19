@@ -1,0 +1,91 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title text-center>
+            View Route
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content text-center>
+    <br>
+    <ion-list>
+        <ion-item>
+            <ion-icon name="pin" item-start></ion-icon>
+            {{route.from.name}}
+        </ion-item>
+        <ion-item>
+            {{route.to.name}}
+            <ion-icon name="pin" item-end></ion-icon>
+        </ion-item>
+        <br>
+        <ion-item [hidden]="route.scheduleType==0">
+            <ion-icon name="calendar" item-start></ion-icon>
+            <b> {{route.date}} </b>
+        </ion-item>
+        <ion-row [hidden]="route.scheduleType==1">
+            <ion-col *ngIf="isRouteDay(0)">
+                <ion-chip>
+                    <ion-label>M</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col *ngIf="isRouteDay(1)">
+                <ion-chip>
+                    <ion-label>T</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col *ngIf="isRouteDay(2)">
+                <ion-chip>
+                    <ion-label>W</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col *ngIf="isRouteDay(3)">
+                <ion-chip>
+                    <ion-label>T</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col *ngIf="isRouteDay(4)">
+                <ion-chip>
+                    <ion-label>F</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col *ngIf="isRouteDay(5)">
+                <ion-chip>
+                    <ion-label>S</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col *ngIf="isRouteDay(6)">
+                <ion-chip>
+                    <ion-label>S</ion-label>
+                </ion-chip>
+            </ion-col>
+        </ion-row>
+        <ion-item>
+            <b> {{route.startTime}}</b>
+            <ion-icon name="time" item-start></ion-icon>
+        </ion-item>
+        <ion-item text-right>
+            <b> {{route.returnTime}} </b>
+            <ion-icon name="time" item-end></ion-icon>
+        </ion-item>
+        <ion-row no-lines no-border>
+            <ion-col>
+                <ion-item>
+                    Seats: <b> {{route.seatsAvail}}</b>
+                </ion-item>
+            </ion-col>
+            <ion-col>
+                <ion-item>
+                    Fare: <b>  {{ route.fare | currency:'INR':true:'1.0-0'}} </b>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-item>
+            <ion-icon name="contact" item-start></ion-icon>
+            {{route.contactNo}}
+            <ion-icon name="call" item-end></ion-icon>
+        </ion-item>
+        <div><br><b>Total Distance : </b>{{route.distance}} </div>
+    </ion-list>
+    <br>
+    <div id="map" class="map" data-tap-disabled="true"></div>
+</ion-content>
