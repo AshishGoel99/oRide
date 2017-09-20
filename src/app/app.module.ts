@@ -27,6 +27,7 @@ import { RoutePage } from '../pages/routes/route';
 import { SchedulePage2 } from '../pages/schedule/schedule2';
 import { ViewRoutePage } from '../pages/routes/viewRoute';
 import { RouteSearchResultPage } from '../pages/routes/routeSearchResult';
+import { EditSchedulePage } from '../pages/schedule/editSchedule';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { RouteSearchResultPage } from '../pages/routes/routeSearchResult';
     RoutePage,
     SchedulePage2,
     ViewRoutePage,
-    RouteSearchResultPage
+    RouteSearchResultPage,
+    EditSchedulePage
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,8 @@ import { RouteSearchResultPage } from '../pages/routes/routeSearchResult';
     RoutePage,
     SchedulePage2,
     ViewRoutePage,
-    RouteSearchResultPage
+    RouteSearchResultPage,
+    EditSchedulePage
   ],
   providers: [
     StatusBar,

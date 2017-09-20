@@ -96,9 +96,11 @@ export class SchedulePage2 implements OnInit {
             response => {
                 // Emit list event
                 console.log(response);
+                let routeId = response.id;
                 this.storage.get(environment.routeDataKey)
                     .then(value => {
-
+                        
+                        route.id = routeId;
                         let data = [route];
                         if (value != null) {
                             value.forEach(element => {

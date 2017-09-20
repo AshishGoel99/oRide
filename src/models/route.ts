@@ -2,6 +2,7 @@ import { location } from "./location";
 import { MapElements } from "./mapElements";
 
 export class Route extends MapElements {
+    id?: string;
     owner?: String;
     startTime: String;
     returnTime: string;

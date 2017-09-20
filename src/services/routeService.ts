@@ -29,4 +29,9 @@ export class RouteService {
         return this.httpService.post(environment.endpoints.saveSchedule,
             data);
     }
+
+    update(data: Route): Observable<any> {
+        return this.httpService.put(environment.endpoints.saveSchedule,
+            data);
+    }
 }

@@ -1,0 +1,122 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title text-center>
+            Update
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding text-center>
+    <ion-grid>
+        <ion-row>
+            <ion-col>
+                <ion-item>
+                    <ion-label>Go Time</ion-label>
+                    <ion-datetime displayFormat="hh:mm A" [(ngModel)]="route.startTime">
+                    </ion-datetime>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
+                <ion-item>
+                    <ion-label>Return Time</ion-label>
+                    <ion-datetime displayFormat="hh:mm A" [(ngModel)]="route.returnTime">
+                    </ion-datetime>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <!-- <ion-row>
+            <ion-col>
+                <ion-item>
+                    <ion-label>Frequency</ion-label>
+                    <ion-select [(ngModel)]="schedule.scheduleType" interface="popover">
+                        <ion-option selected value="0">Weekly</ion-option>
+                        <ion-option value="1">Specific Date</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-col>
+        </ion-row> -->
+        <ion-row [hidden]="route.scheduleType==0">
+            <ion-col>
+                <ion-item>
+                    <ion-label>Select Date</ion-label>
+                    <ion-datetime min="{{minDate}}" max="{{maxDate}}" displayFormat="MMM DD, YYYY" [(ngModel)]="route.date">
+                    </ion-datetime>
+                </ion-item>
+            </ion-col>
+        </ion-row>
+        <ion-row [hidden]="route.scheduleType==1">
+            <ion-col>
+                <ion-chip [color]="getSelectedDayClass(0)" (click)="selectDay(0)">
+                    <ion-label>M</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col>
+                <ion-chip [color]="getSelectedDayClass(1)" (click)="selectDay(1)">
+                    <ion-label>T</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col>
+                <ion-chip [color]="getSelectedDayClass(2)" (click)="selectDay(2)">
+                    <ion-label>W</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col>
+                <ion-chip [color]="getSelectedDayClass(3)" (click)="selectDay(3)">
+                    <ion-label>T</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col>
+                <ion-chip [color]="getSelectedDayClass(4)" (click)="selectDay(4)">
+                    <ion-label>F</ion-label>
+                </ion-chip>
+            </ion-col>
+        </ion-row>
+        <ion-row [hidden]="route.scheduleType==1">
+            <ion-col></ion-col>
+            <ion-col></ion-col>
+            <ion-col></ion-col>
+            <ion-col>
+                <ion-chip [color]="getSelectedDayClass(5)" (click)="selectDay(5)">
+                    <ion-label>S</ion-label>
+                </ion-chip>
+            </ion-col>
+            <ion-col>
+                <ion-chip [color]="getSelectedDayClass(6)" (click)="selectDay(6)">
+                    <ion-label>S</ion-label>
+                </ion-chip>
+            </ion-col>
+        </ion-row>
+        <br>
+        <!-- <ion-row> -->
+        <ion-item>
+            <ion-label>Seats</ion-label>
+            <ion-input text-right type="number" [(ngModel)]="route.seatsAvail" placeholder="Seats"></ion-input>
+        </ion-item>
+        <!-- </ion-row>
+        <ion-row> -->
+        <ion-item>
+            <ion-label>Fare</ion-label>
+            <ion-input text-right type="number" [(ngModel)]="route.fare" placeholder="Fare"></ion-input>
+        </ion-item>
+        <!-- </ion-row> -->
+        <!-- <ion-row>
+            <ion-col>
+                <ion-input [(ngModel)]="schedule.vehicleNo" placeholder="Vehicle"></ion-input>
+            </ion-col>
+            <ion-col>
+                <ion-input type="tel" [(ngModel)]="schedule.contactNo" placeholder="Contact"></ion-input>
+            </ion-col>
+        </ion-row> -->
+        <br>
+        <ion-row>
+            <ion-col>
+                <button (click)="updateRoute()" ion-button small color="positive">Update</button>
+            </ion-col>
+            <ion-col>
+                <button ion-button small color="light" (click)="dismiss()">Cancel</button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-content>
