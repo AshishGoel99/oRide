@@ -79,7 +79,7 @@ export class HttpService extends Http {
             options = new RequestOptions();
         }
 
-        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJBc2hpc2giLCJlbWFpbCI6ImFzaGlzaC5nb2VsOTlAeWFob28uY29tIiwibmFtZWlkIjoiYzY0YTcyYWEtNzMwMS00YzlkLTgzN2QtN2Q0MTU4ZWM2Y2M2IiwiZXhwIjoxNTA1MjI4MTgyLCJpc3MiOiJvUmlkZSIsImF1ZCI6InBhc3NlbmdlcnMifQ.rod48AWc5rjNx7w6jT3KGy2LFNRk0A6GXDE63stGtd0";//null;
+        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQXNoaXNoIiwiZW1haWwiOiJhc2hpc2guZ29lbDk5QHlhaG9vLmNvbSIsIm5hbWVpZCI6ImM2NGE3MmFhLTczMDEtNGM5ZC04MzdkLTdkNDE1OGVjNmNjNiIsImV4cCI6MTUwNjM0ODc5MCwiaXNzIjoib1JpZGUiLCJhdWQiOiJwYXNzZW5nZXJzIn0.8m4BcsNUYSQB9l8cv5xGGDl9Kn1p9dcK-_jznOUDii0";//null;
         this.storage.get(environment.dataKey).then((data: UserData) => {
             if (data != null)
                 token = data.apiToken;
@@ -124,7 +124,7 @@ export class HttpService extends Http {
      * @returns {ErrorObservable}
      */
     private onCatch(error: any, caught: Observable<any>): Observable<any> {
-        this.notifyService.popError();
+        this.notifyService.popError(error);
         return Observable.throw(error);
     }
 
@@ -141,7 +141,7 @@ export class HttpService extends Http {
      * @param error
      */
     private onError(error: any): void {
-        this.notifyService.popError();
+        this.notifyService.popError(error);
     }
 
     /**

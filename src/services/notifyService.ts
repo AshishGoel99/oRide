@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Loading, LoadingController } from "ionic-angular";
+import { Loading, LoadingController, AlertController } from "ionic-angular";
 
 @Injectable()
 export class NotifyService {
@@ -7,7 +7,8 @@ export class NotifyService {
     loading: Loading;
 
     constructor(
-        private loadingCtrl: LoadingController) {
+        private loadingCtrl: LoadingController,
+        private alertCtrl: AlertController) {
     }
 
     showLoading(): void {
@@ -21,7 +22,11 @@ export class NotifyService {
         this.loading.dismiss();
     }
 
-    popError(): void {
-
+    popError(err: string): void {
+        this.alertCtrl.create({
+            title: 'Error',
+            subTitle: err,
+            buttons: ['Ok']
+        }).present();
     }
 }

@@ -6,11 +6,11 @@ export class Route extends MapElements {
     owner?: String;
     startTime: String;
     returnTime: string;
-    duration?: number; // in hours
+    // duration?: number; // in hours
     from: location;
     to: location;
     note?: String;
-    polyline: string;
+    polyLine: string;
     scheduleType: number;
     days: Array<number>;
     date: string;

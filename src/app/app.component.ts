@@ -15,25 +15,32 @@ export class MyApp {
   @ViewChild(Nav) nav;
   rootPage: any = TabsPage;
 
-  constructor(platform: Platform, statusBar: StatusBar,
-    splashScreen: SplashScreen,
+  constructor(platform: Platform,
+    private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
     private storage: Storage) {
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      let env = this;
 
-      this.storage.get(environment.dataKey)
-        .then(function (data) {
-          if (data != null) {
-            //we don't have the user data so we will ask him to log in
-            env.nav.push(LoginPage);
-          }
-
-          splashScreen.hide();
-          statusBar.styleDefault();
-        });
+      //Validate if user is logged in otherwise show him login page.
+      this.validateUserLogin();
     });
+  }
+
+  private validateUserLogin(): void {
+    let env = this;
+
+    this.storage.get(environment.dataKey)
+      .then(function (data) {
+        if (data != null) {
+          //we don't have the user data so we will ask him to log in
+          env.nav.push(LoginPage);
+        }
+
+        env.splashScreen.hide();
+        env.statusBar.styleDefault();
+      });
   }
 }

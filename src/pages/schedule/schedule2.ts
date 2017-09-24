@@ -68,14 +68,14 @@ export class SchedulePage2 implements OnInit {
                 latlng: this.schedule.mapElems.endLatLng,
                 name: this.schedule.to.formatted_address
             },
-            polyline: this.schedule.mapElems.polyline,
-            polygon: this.schedule.mapElems.polygon,
+            polyLine: this.schedule.mapElems.polyLine,
+            polyGon: this.schedule.mapElems.polyGon,
             distance: this.schedule.mapElems.distance,
             startTime: this.schedule.goTime,
             returnTime: this.schedule.returnTime,
             scheduleType: this.schedule.scheduleType,
             days: this.schedule.days,
-            date: this.dateService.ToUtc(this.schedule.date),
+            date: this.schedule.date,//on server it would be auto parsed to UTC
             seatsAvail: this.schedule.seatsAvail,
             fare: this.schedule.price,
             vehicle: this.schedule.vehicleNo,

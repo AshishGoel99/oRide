@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { Route } from '../../models/route';
 import { ViewRoutePage } from './viewRoute';
@@ -10,7 +10,6 @@ import { ViewRoutePage } from './viewRoute';
 })
 
 export class RouteSearchResultPage implements OnInit {
-
     private routes: Route[];
 
     constructor(private navCtrl: NavController,

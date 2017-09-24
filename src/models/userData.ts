@@ -6,4 +6,5 @@ export class UserData {
     fbId: string;
     fbToken: string;
     apiToken?: string;
+    other?: any;
 }

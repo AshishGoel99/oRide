@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MapElements } from "../models/mapElements";
+import { Route } from '../models/route';
 
 declare let jsts: any;
 @Injectable()
@@ -49,6 +50,43 @@ export class GoogleService {
 
         this.displayRoute({ 'placeId': fromPlace.place_id }, { 'placeId': toPlace.place_id }, directionsService,
             directionsDisplay, wps, map);
+    }
+
+    drawMapFromRoute(elementId: string, data: Route): void {
+
+        let map = new google.maps.Map(document.getElementById(elementId), {
+            zoom: 13,
+            center: { lat: 22, lng: 77 }  // India.
+        });
+
+        var path = google.maps.geometry.encoding.decodePath(data.polyLine);
+
+        var route = new google.maps.Polyline({
+            path: path,
+            geodesic: true,
+            strokeColor: '#4285F4',
+            strokeOpacity: 1.0,
+            strokeWeight: 7
+        });
+
+        route.setMap(map);
+        this.addMarker(map, path[0]);
+        this.addMarker(map, path[path.length - 1]);
+
+        let boundsData = JSON.parse(data.bounds);
+
+        var bounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(boundsData.south, boundsData.west),
+            new google.maps.LatLng(boundsData.north, boundsData.east)
+        );
+        map.fitBounds(bounds);
+    }
+
+    private addMarker(map: google.maps.Map, loc: google.maps.LatLng): void {
+        let marker = new google.maps.Marker({
+            position: loc,
+            map: map
+        });
     }
 
     private computeTotalDistance(result): string {
@@ -106,7 +144,7 @@ export class GoogleService {
         }
         var mapElems = new MapElements();
         var polyLinePath = polyline.getPath();
-        mapElems.polyline = google.maps.geometry.encoding.encodePath(polyLinePath);
+        mapElems.polyLine = google.maps.geometry.encoding.encodePath(polyLinePath);
         mapElems.startLatLng = "POINT" + polyLinePath.getAt(0).toString().replace(',', '');
         mapElems.endLatLng = "POINT" + polyLinePath.getAt(polyLinePath.getLength() - 1).toString().replace(',', '');
 
@@ -128,7 +166,7 @@ export class GoogleService {
         for (i = 0; i < paths.length; i++)
             polygonStr += "," + paths[i].lat() + " " + paths[i].lng();
 
-        mapElems.polygon = "POLYGON((" + polygonStr.substr(1) + "))";
+        mapElems.polyGon = "POLYGON((" + polygonStr.substr(1) + "))";
         mapElems.latLngBounds = bounds;
         return mapElems;
     };

@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title text-center>
-      Schedule
+      New
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -24,13 +24,13 @@
 
   <div>
     <button (click)="showMap()" ion-button small color="light">See Map</button>
+    <!-- <button  ion-button right small color="primary">Next</button> -->
   </div>
   <br>
-
   <div id="map" class="map" data-tap-disabled="true" [hidden]="!isShowMap"></div>
-  <div [hidden]="!isShowMap"><br><b>Total Distance : </b>{{schedule.distance}} </div><br><br>
+  <div [hidden]="!isShowMap"><br><b>Total Distance : </b>{{schedule.distance}} </div>
 
-  <div>
-    <button (click)="next()" ion-button right small color="primary">Next</button>
-  </div>
+  <ion-fab right bottom>
+    <button [disabled]="!isShowMap" (click)="next()" ion-fab color="primary"><ion-icon name="arrow-round-forward"></ion-icon></button>
+  </ion-fab>
 </ion-content>

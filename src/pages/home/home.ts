@@ -10,7 +10,6 @@ import { Route } from "../../models/route";
 import { DateTimeService } from '../../services/datetimeService';
 import { ViewRoutePage } from '../routes/viewRoute';
 import { Storage } from '@ionic/storage';
-import { environment } from '../../environment';
 import { RouteSearchResultPage } from '../routes/routeSearchResult';
 
 
@@ -26,8 +25,8 @@ export class HomePage implements OnInit {
 
   private from: string;
   private to: string;
-  private fromPlace: any;
-  private toPlace: any;
+  private fromPlace: google.maps.places.PlaceResult;
+  private toPlace: google.maps.places.PlaceResult;
   private frame: number;
   private date: string;
 
@@ -49,11 +48,14 @@ export class HomePage implements OnInit {
     });
 
     let now = new Date();
+    console.log(now);
     this.date = this.dateService.ToLocalDateTime(now);
 
-    this.minDate = this.dateService.ToLocalDate(now);
+    this.minDate = this.dateService.ToLocalDateTime(now);
+    console.log(this.minDate);
     now.setDate(now.getDate() + 10);
-    this.maxDate = this.dateService.ToLocalDate(now);
+    this.maxDate = this.dateService.ToLocalDateTime(now);
+    console.log(this.maxDate);
     this.frame = 2;
   }
 
@@ -68,16 +70,21 @@ export class HomePage implements OnInit {
   private searchRoutes(): void {
     //for testing only
     let env = this;
-    this.storage.get(environment.routeDataKey)
-      .then(function (data) {
-        env.navCtrl.push(RouteSearchResultPage, { routes: data });
-        console.log(data);
-      });
-
-    // this.routeService.getRoutes(this.from, this.to, this.frame,
-    //   this.dateService.ToUtc(this.date))
-    //   .then(routes => {
-    //     env.navCtrl.push(RouteSearchResultPage, { routes: routes });
+    // this.storage.get(environment.routeDataKey)
+    //   .then(function (data) {
+    //     env.navCtrl.push(RouteSearchResultPage, { routes: data });
+    //     console.log(data);
     //   });
+
+    let fromPoints = `POINT(${this.fromPlace.geometry.location.lat()} ${this.fromPlace.geometry.location.lng()})`;
+    let toPoints = `POINT(${this.toPlace.geometry.location.lat()} ${this.toPlace.geometry.location.lng()})`;
+
+    console.log(fromPoints);
+
+    this.routeService.getRoutes(fromPoints, toPoints, this.frame, this.date) //this date is once sent to serve, would be parsed in UTC auto
+      .then(routes => {
+        console.log(routes);
+        env.navCtrl.push(RouteSearchResultPage, { routes: routes });
+      });
   }
 }

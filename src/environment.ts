@@ -4,7 +4,7 @@ export const environment = {
     dataKey: "userData",
     routeDataKey:"routes",
     endpoints: {
-        saveSchedule: "Rides",
+        schedule: "Rides",
         userLogin: "SignIn"
     }
 };

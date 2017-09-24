@@ -15,9 +15,9 @@ export class RouteService {
 
         return new Promise<Route[]>((resolve, reject) => {
             this.httpService
-                .get(`from=${from}&to=${to}&timeFrame=${frame}&time=${dateTime}&`)
-                .subscribe(data => {
-                    resolve(data);
+                .get(environment.endpoints.schedule + `?From=${from}&To=${to}&Frame=${frame}&Time=${dateTime}`)
+                .subscribe((data: Response) => {
+                    resolve(data.json());
                 }, error => {
                     reject(error);
                 });
@@ -26,12 +26,12 @@ export class RouteService {
     }
 
     save(data: Route): Observable<any> {
-        return this.httpService.post(environment.endpoints.saveSchedule,
+        return this.httpService.post(environment.endpoints.schedule,
             data);
     }
 
     update(data: Route): Observable<any> {
-        return this.httpService.put(environment.endpoints.saveSchedule,
+        return this.httpService.put(environment.endpoints.schedule,
             data);
     }
 }
