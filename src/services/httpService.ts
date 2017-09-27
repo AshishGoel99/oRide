@@ -17,6 +17,7 @@ import { UserData } from '../models/userData';
 
 @Injectable()
 export class HttpService extends Http {
+    private token: string;
 
     constructor(
         backend: ConnectionBackend,
@@ -34,17 +35,48 @@ export class HttpService extends Http {
      * @returns {Observable<>}
      */
     get(url: string, options?: RequestOptionsArgs): Observable<any> {
-        this.beforeRequest();
-        return super.get(this.getFullUrl(url), this.requestOptions(options))
-            .catch(this.onCatch)
-            .do((res: Response) => {
-                this.onSuccess(res);
-            }, (error: any) => {
-                this.onError(error);
-            })
-            .finally(() => {
-                this.onFinally();
+
+        return new Observable(observer => {
+            this.beforeRequest().then(() => {
+
+                super.get(this.getFullUrl(url), this.requestOptions(options))
+                    .do((res: Response) => {
+                        this.onSuccess(res);
+                    }, (error: any) => {
+                        this.onError(error);
+                    })
+                    .catch((err, caught) => {
+                        this.onCatch(err, caught);
+                        return Observable.of(null);
+                    })
+                    .finally(() => {
+                        this.onFinally();
+                    })
+                    .subscribe((data: Response) => {
+                        observer.next(data);
+                        observer.complete();
+                    },
+                    error => {
+                        observer.error(error);
+                    });
             });
+        });
+
+        // this.beforeRequest();
+
+        // return super.get(this.getFullUrl(url), this.requestOptions(options))
+        //     .do((res: Response) => {
+        //         this.onSuccess(res);
+        //     }, (error: any) => {
+        //         this.onError(error);
+        //     })
+        //     .catch((err, caught) => {
+        //         this.onCatch(err, caught);
+        //         return Observable.of(null);
+        //     })
+        //     .finally(() => {
+        //         this.onFinally();
+        //     });
     }
 
     /**
@@ -54,17 +86,48 @@ export class HttpService extends Http {
      * @returns {Observable<>}
      */
     post(url: string, data?: any, options?: RequestOptionsArgs): Observable<any> {
-        this.beforeRequest();
-        return super.post(this.getFullUrl(url), data, this.requestOptions(options))
-            .catch(this.onCatch)
-            .do((res: Response) => {
-                this.onSuccess(res);
-            }, (error: any) => {
-                this.onError(error);
-            })
-            .finally(() => {
-                this.onFinally();
+
+        return new Observable(observer => {
+            this.beforeRequest().then(() => {
+
+                super.post(this.getFullUrl(url), data, this.requestOptions(options))
+                    .do((res: Response) => {
+                        this.onSuccess(res);
+                    }, (error: any) => {
+                        this.onError(error);
+                    })
+                    .catch((err, caught) => {
+                        this.onCatch(err, caught);
+                        return Observable.of(null);
+                    })
+                    .finally(() => {
+                        this.onFinally();
+                    })
+                    .subscribe((data: Response) => {
+                        observer.next(data);
+                        observer.complete();
+                    },
+                    error => {
+                        observer.error(error);
+                    });
             });
+        });
+
+        // this.beforeRequest();
+
+        // return super.post(this.getFullUrl(url), data, this.requestOptions(options))
+        //     .do((res: Response) => {
+        //         this.onSuccess(res);
+        //     }, (error: any) => {
+        //         this.onError(error);
+        //     })
+        //     .catch((err, caught) => {
+        //         this.onCatch(err, caught);
+        //         return Observable.of(null);
+        //     })
+        //     .finally(() => {
+        //         this.onFinally();
+        //     });
     }
 
     // Implement POST, PUT, DELETE HERE
@@ -79,15 +142,9 @@ export class HttpService extends Http {
             options = new RequestOptions();
         }
 
-        let token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJnaXZlbl9uYW1lIjoiQXNoaXNoIiwiZW1haWwiOiJhc2hpc2guZ29lbDk5QHlhaG9vLmNvbSIsIm5hbWVpZCI6ImM2NGE3MmFhLTczMDEtNGM5ZC04MzdkLTdkNDE1OGVjNmNjNiIsImV4cCI6MTUwNjM0ODc5MCwiaXNzIjoib1JpZGUiLCJhdWQiOiJwYXNzZW5nZXJzIn0.8m4BcsNUYSQB9l8cv5xGGDl9Kn1p9dcK-_jznOUDii0";//null;
-        this.storage.get(environment.dataKey).then((data: UserData) => {
-            if (data != null)
-                token = data.apiToken;
-        });
-
         if (options.headers == null) {
             options.headers = new Headers({
-                'Authorization': `bearer ${token}`,
+                'Authorization': `bearer ${this.token}`,
                 'Content-Type': 'application/json'
             });
         }
@@ -106,8 +163,16 @@ export class HttpService extends Http {
     /**
      * Before any Request.
      */
-    private beforeRequest(): void {
+    private async beforeRequest(): Promise<void> {
         this.notifyService.showLoading();
+
+        if (this.token == null || this.token == '') {
+            let env = this;
+            await this.storage.get(environment.dataKey).then((data: UserData) => {
+                if (data != null)
+                    env.token = data.apiToken;
+            });
+        }
     }
 
     /**

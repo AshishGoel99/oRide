@@ -7,6 +7,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { TabsPage } from '../pages/tabs/tabs';
 import { environment } from '../environment';
 import { LoginPage } from '../pages/login/login';
+import { UserData } from '../models/userData';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,6 +15,7 @@ import { LoginPage } from '../pages/login/login';
 export class MyApp {
   @ViewChild(Nav) nav;
   rootPage: any = TabsPage;
+  userData: UserData=new UserData();
 
   constructor(platform: Platform,
     private statusBar: StatusBar,
@@ -34,13 +36,28 @@ export class MyApp {
 
     this.storage.get(environment.dataKey)
       .then(function (data) {
+
+        if (data != null)
+          env.userData = data;
+
         if (data != null) {
           //we don't have the user data so we will ask him to log in
-          env.nav.push(LoginPage);
+          env.nav.push(LoginPage, {
+            callback: (d) => {
+              env.userData = d;
+            }
+          });
         }
 
         env.splashScreen.hide();
         env.statusBar.styleDefault();
       });
+  }
+
+
+
+  ionViewDidLoad() {
+
+    console.log("Hey...");
   }
 }

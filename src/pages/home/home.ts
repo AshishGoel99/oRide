@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { googlemaps } from 'googlemaps';
-import { PopoverController } from 'ionic-angular';
+// import { PopoverController } from 'ionic-angular';
 import { SideMenu } from "../sideMenu/sideMenu";
 import { RouteService } from "../../services/routeService";
 import { GoogleService } from "../../services/googleService";
@@ -32,7 +32,7 @@ export class HomePage implements OnInit {
 
   constructor(public navCtrl: NavController,
     private routeService: RouteService,
-    private popoverCtrl: PopoverController,
+    // private popoverCtrl: PopoverController,
     private googleService: GoogleService,
     private dateService: DateTimeService,
     private storage: Storage) {
@@ -60,12 +60,12 @@ export class HomePage implements OnInit {
   }
 
 
-  private presentMenu(myEvent): void {
-    let popover = this.popoverCtrl.create(SideMenu);
-    popover.present({
-      ev: myEvent
-    });
-  }
+  // private presentMenu(myEvent): void {
+  //   let popover = this.popoverCtrl.create(SideMenu);
+  //   popover.present({
+  //     ev: myEvent
+  //   });
+  // }
 
   private searchRoutes(): void {
     //for testing only

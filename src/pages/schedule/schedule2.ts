@@ -99,7 +99,7 @@ export class SchedulePage2 implements OnInit {
                 let routeId = response.id;
                 this.storage.get(environment.routeDataKey)
                     .then(value => {
-                        
+
                         route.id = routeId;
                         let data = [route];
                         if (value != null) {

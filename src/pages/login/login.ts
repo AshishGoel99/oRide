@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Facebook } from '@ionic-native/facebook';
-import { NavController, Platform } from 'ionic-angular';
+import { NavController, Platform, NavParams } from 'ionic-angular';
 import { environment } from '../../environment';
 import { Storage } from '@ionic/storage';
 import { HttpService } from '../../services/httpService';
@@ -14,11 +14,13 @@ export class LoginPage {
     // Property used to store the callback of the event handler to unsubscribe to it when leaving this page
     public unregisterBackButtonAction: any;
     userData: UserData;
+    private callBack: any;
 
     constructor(
         public navCtrl: NavController, public fb: Facebook,
         private storage: Storage, private httpService: HttpService,
-        private platform: Platform
+        private platform: Platform,
+        private navParams: NavParams
     ) {
     }
 
@@ -55,8 +57,9 @@ export class LoginPage {
     addUser(data: UserData, callback: (r: any) => void): void {
         this.httpService.post(environment.endpoints.userLogin, data)
             .subscribe(
-            response => {
-                callback(response);
+            (response: Response) => {
+                if (response.status == 200)
+                    callback(response.json());
             },
             err => {
                 // Log errors if any
@@ -66,9 +69,11 @@ export class LoginPage {
 
     ionViewWillEnter() {
         this.initializeBackButtonCustomHandler();
+        this.callBack = this.navParams.get('callback');
     }
 
     ionViewWillLeave() {
+        this.callBack(this.userData);
         // Unregister the custom back button action for this page
         this.unregisterBackButtonAction && this.unregisterBackButtonAction();
     }
