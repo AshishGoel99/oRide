@@ -34,4 +34,9 @@ export class RouteService {
         return this.httpService.put(environment.endpoints.schedule,
             data);
     }
+
+    delete(id: string): Observable<any> {
+        return this.httpService.delete(environment.endpoints.schedule,
+            id);
+    }
 }

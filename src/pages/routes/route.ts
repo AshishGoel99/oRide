@@ -29,16 +29,21 @@ export class RoutePage implements OnInit {
             });
     }
 
-    ionViewWillEnter(): void {
-        this.ngZone.run(() => { });
-    }
+    // ionViewWillEnter(): void {
+    //     this.ngZone.run(() => { });
+    // }
 
     private showSchedulePage(): void {
         this.navCtrl.push(SchedulePage);
     }
 
     private showEditPage(route: Route): void {
-        let modal = this.modalCtrl.create(EditSchedulePage, { route: route });
+        let env = this;
+        let modal = this.modalCtrl.create(EditSchedulePage, {
+            route: route, callback: (d) => {
+                env.routes = d;
+            }
+        });
         modal.present();
     }
 }

@@ -14,6 +14,7 @@ export class EditSchedulePage implements OnInit {
 
     maxDate: string;
     minDate: string;
+    callback: any;
 
     private route: Route;
 
@@ -25,6 +26,7 @@ export class EditSchedulePage implements OnInit {
 
     ngOnInit(): void {
         this.route = this.navParams.get("route");
+        this.callback = this.navParams.get("callback");
         console.log(this.route);
 
         let now = new Date();
@@ -58,24 +60,52 @@ export class EditSchedulePage implements OnInit {
             .subscribe(
             response => {
                 // Emit list event
-                console.log(response);
                 this.storage.get(environment.routeDataKey)
                     .then((value: Route[]) => {
 
-                        let data = [];
+                        let newRoutes: Route[] = [];
                         if (value != null) {
                             value.forEach(element => {
-                                if (element.id == env.route.id)
-                                    data.push(env.route);
+                                newRoutes.push(element.id == env.route.id ? env.route : element);
                             });
                         }
 
-                        this.storage.set(environment.routeDataKey, data)
+                        this.storage.set(environment.routeDataKey, newRoutes)
                             .then(function () {
+                                env.callback();
                                 env.viewCtrl.dismiss();
                             });
                     });
+            },
+            err => {
+                // Log errors if any
+                console.log(err);
+            });
+    }
 
+    private deleteRoute(): void {
+        let env = this;
+        this.routeService.delete(this.route.id)
+            .subscribe(
+            response => {
+                // Emit list event
+                this.storage.get(environment.routeDataKey)
+                    .then((value: Route[]) => {
+
+                        let newRoutes: Route[] = [];
+                        if (value != null) {
+                            value.forEach(element => {
+                                if (element.id != env.route.id)
+                                    newRoutes.push(element);
+                            });
+                        }
+
+                        this.storage.set(environment.routeDataKey, newRoutes)
+                            .then(function () {
+                                env.callback();
+                                env.viewCtrl.dismiss();
+                            });
+                    });
             },
             err => {
                 // Log errors if any

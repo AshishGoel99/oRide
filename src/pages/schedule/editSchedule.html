@@ -109,13 +109,22 @@
                 <ion-input type="tel" [(ngModel)]="schedule.contactNo" placeholder="Contact"></ion-input>
             </ion-col>
         </ion-row> -->
-        <br>
+        <br><br>
         <ion-row>
             <ion-col>
-                <button (click)="updateRoute()" ion-button small color="positive">Update</button>
+                <button (click)="updateRoute()" ion-button icon-only clear color="primary">
+                    <ion-icon name="done-all"></ion-icon>
+                </button>
             </ion-col>
             <ion-col>
-                <button ion-button small color="light" (click)="dismiss()">Cancel</button>
+                <button (click)="deleteRoute()" ion-button icon-only clear color="danger">
+                    <ion-icon name="trash"></ion-icon>
+                </button>
+            </ion-col>
+            <ion-col>
+                <button (click)="dismiss()" ion-button icon-only clear color="dark">
+                    <ion-icon name="exit"></ion-icon>
+                </button>
             </ion-col>
         </ion-row>
     </ion-grid>
