@@ -1,6 +1,6 @@
 {
   "name": "oRide",
-  "app_id": "",
+  "app_id": "393d4e4e",
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}

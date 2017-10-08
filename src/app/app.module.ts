@@ -28,6 +28,7 @@ import { SchedulePage2 } from '../pages/schedule/schedule2';
 import { ViewRoutePage } from '../pages/routes/viewRoute';
 import { RouteSearchResultPage } from '../pages/routes/routeSearchResult';
 import { EditSchedulePage } from '../pages/schedule/editSchedule';
+import { Push } from '@ionic-native/push';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { EditSchedulePage } from '../pages/schedule/editSchedule';
     SplashScreen,
     RouteService,
     Facebook,
+    Push,
     GoogleService,
     NotifyService,
     DateTimeService,

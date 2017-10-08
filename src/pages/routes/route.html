@@ -1,8 +1,11 @@
 <ion-header>
     <ion-navbar>
-        <!-- <ion-title text-center>
-            My Routes
-        </ion-title> -->
+        <button ion-button menuToggle right>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            ORide
+        </ion-title>
     </ion-navbar>
 </ion-header>
 
@@ -41,6 +44,8 @@
     </ion-card>
 
     <ion-fab right bottom>
-        <button (click)="showSchedulePage()" ion-fab color="primary"><ion-icon name="add"></ion-icon></button>
+        <button (click)="showSchedulePage()" ion-fab color="primary">
+            <ion-icon name="add"></ion-icon>
+        </button>
     </ion-fab>
 </ion-content>

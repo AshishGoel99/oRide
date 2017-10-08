@@ -1,16 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { googlemaps } from 'googlemaps';
-// import { PopoverController } from 'ionic-angular';
 import { SideMenu } from "../sideMenu/sideMenu";
 import { RouteService } from "../../services/routeService";
 import { GoogleService } from "../../services/googleService";
 import { Route } from "../../models/route";
-// import { HttpService } from '../../services/httpService';
 import { DateTimeService } from '../../services/datetimeService';
 import { ViewRoutePage } from '../routes/viewRoute';
 import { Storage } from '@ionic/storage';
 import { RouteSearchResultPage } from '../routes/routeSearchResult';
+import { Push, PushObject, PushOptions } from '@ionic-native/push';
 
 
 @Component({
@@ -32,10 +31,9 @@ export class HomePage implements OnInit {
 
   constructor(public navCtrl: NavController,
     private routeService: RouteService,
-    // private popoverCtrl: PopoverController,
     private googleService: GoogleService,
     private dateService: DateTimeService,
-    private storage: Storage) {
+    private storage: Storage, private push: Push) {
   }
 
   ngOnInit() {
@@ -57,15 +55,40 @@ export class HomePage implements OnInit {
     this.maxDate = this.dateService.ToLocalDateTime(now);
     console.log(this.maxDate);
     this.frame = 2;
+
+    this.setupPush();
   }
 
+  private setupPush(): void {
 
-  // private presentMenu(myEvent): void {
-  //   let popover = this.popoverCtrl.create(SideMenu);
-  //   popover.present({
-  //     ev: myEvent
-  //   });
-  // }
+    const options: PushOptions = {
+      android: {
+        senderID: '352855987694'
+      }
+    };
+    const pushObject: PushObject = this.push.init(options);
+    // to check if we have permission
+    this.push.hasPermission()
+      .then((res: any) => {
+
+        if (res.isEnabled) {
+          console.log('We have permission to send push notifications');
+        } else {
+          console.log('We do not have permission to send push notifications');
+        }
+      });
+
+    pushObject.on('registration').subscribe((data: any) => {
+      console.log('device token -> ' + data.registrationId);
+      //TODO - send device token to server
+    });
+
+    pushObject.on('notification').subscribe((data: any) => {
+      console.log('message -> ' + data.message);
+    });
+
+    pushObject.on('error').subscribe(error => console.error('Error with Push plugin' + error));
+  }
 
   private searchRoutes(): void {
     //for testing only
