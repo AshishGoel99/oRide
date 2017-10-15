@@ -29,6 +29,7 @@ import { ViewRoutePage } from '../pages/routes/viewRoute';
 import { RouteSearchResultPage } from '../pages/routes/routeSearchResult';
 import { EditSchedulePage } from '../pages/schedule/editSchedule';
 import { Push } from '@ionic-native/push';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { Push } from '@ionic-native/push';
     GoogleService,
     NotifyService,
     DateTimeService,
+    LocalNotifications,
     {
       provide: HttpService,
       deps: [XHRBackend, RequestOptions, NotifyService, Storage],

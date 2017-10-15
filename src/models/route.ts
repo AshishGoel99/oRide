@@ -3,13 +3,13 @@ import { MapElements } from "./mapElements";
 
 export class Route extends MapElements {
     id?: string;
-    owner?: String;
-    startTime: String;
+    owner?: string;
+    startTime: string;
     returnTime: string;
     // duration?: number; // in hours
     from: location;
     to: location;
-    note?: String;
+    note?: string;
     polyLine: string;
     scheduleType: number;
     days: Array<number>;

@@ -7,4 +7,5 @@ export class UserData {
     fbToken: string;
     apiToken?: string;
     other?: any;
+    pushId?: string
 }

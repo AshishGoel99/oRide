@@ -3,6 +3,31 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class DateTimeService {
 
+
+    public GetNextWeekDayDateTime(day: number, time: string): Date {
+        let dateTime = new Date();
+        let dayDiff = (day - dateTime.getDay());
+
+        if (dayDiff > 0) {
+            dateTime.setDate(dateTime.getDate() + dayDiff);
+        } else {
+            dateTime.setDate(dateTime.getDate() + dayDiff + 7);
+        }
+
+        return this.ParseDateTime(dateTime, time);
+    }
+
+    public ParseDateTime(date: string | Date, time: string): Date {
+
+        let dateTime = typeof date === 'string' ? new Date(date) : date;
+        let timeFractions = time.split(':');
+
+        dateTime.setHours(+timeFractions[0]);
+        dateTime.setMinutes(+timeFractions[1]);
+
+        return dateTime;
+    }
+
     public ToLocalDate(now: Date): string {
         return now.getFullYear()
             + "-"

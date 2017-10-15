@@ -7,6 +7,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import { Schedule } from '../../models/schedule';
 import { Route } from '../../models/route';
 import { Storage } from '@ionic/storage';
+import { NotificationService } from '../../services/notificationService';
 
 @Component({
     selector: 'page-schedule2',
@@ -23,7 +24,8 @@ export class SchedulePage2 implements OnInit {
     constructor(private dateService: DateTimeService,
         private nav: NavController, private navParams: NavParams,
         private routeService: RouteService,
-        private storage: Storage) { }
+        private storage: Storage,
+        private notificationService: NotificationService) { }
 
     ngOnInit(): void {
 
@@ -95,7 +97,6 @@ export class SchedulePage2 implements OnInit {
             .subscribe(
             response => {
                 // Emit list event
-                console.log(response);
                 let routeId = response.id;
                 this.storage.get(environment.routeDataKey)
                     .then(value => {
@@ -107,13 +108,13 @@ export class SchedulePage2 implements OnInit {
                                 data.push(element);
                             });
                         }
-
                         this.storage.set(environment.routeDataKey, data)
                             .then(function () {
-                                env.nav.popToRoot();
+                                env.notificationService.ScheduleNotifications(data, () => {
+                                    env.nav.popToRoot();
+                                });
                             });
                     });
-
             },
             err => {
                 // Log errors if any

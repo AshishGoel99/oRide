@@ -25,6 +25,10 @@ export class RouteService {
 
     }
 
+    setRouteStarted(id: string): void {
+        this.httpService.get(environment.endpoints.scheduleStart).subscribe();
+    }
+
     save(data: Route): Observable<any> {
         return this.httpService.post(environment.endpoints.schedule,
             data);

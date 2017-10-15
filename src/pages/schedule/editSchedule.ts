@@ -5,6 +5,7 @@ import { DateTimeService } from "../../services/datetimeService";
 import { RouteService } from "../../services/routeService";
 import { environment } from "../../environment";
 import { Storage } from '@ionic/storage';
+import { NotificationService } from "../../services/notificationService";
 
 @Component({
     selector: 'page-editSchedule',
@@ -22,7 +23,8 @@ export class EditSchedulePage implements OnInit {
         private dateService: DateTimeService,
         private viewCtrl: ViewController,
         private routeService: RouteService,
-        private storage: Storage) { }
+        private storage: Storage,
+        private notificationService: NotificationService) { }
 
     ngOnInit(): void {
         this.route = this.navParams.get("route");
@@ -72,8 +74,10 @@ export class EditSchedulePage implements OnInit {
 
                         this.storage.set(environment.routeDataKey, newRoutes)
                             .then(function () {
-                                env.callback();
-                                env.viewCtrl.dismiss();
+                                env.notificationService.ScheduleNotifications(newRoutes, () => {
+                                    env.callback();
+                                    env.viewCtrl.dismiss();
+                                });
                             });
                     });
             },
@@ -102,8 +106,10 @@ export class EditSchedulePage implements OnInit {
 
                         this.storage.set(environment.routeDataKey, newRoutes)
                             .then(function () {
-                                env.callback();
-                                env.viewCtrl.dismiss();
+                                env.notificationService.ScheduleNotifications(newRoutes, () => {
+                                    env.callback();
+                                    env.viewCtrl.dismiss();
+                                });
                             });
                     });
             },

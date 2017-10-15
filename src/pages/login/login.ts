@@ -5,6 +5,7 @@ import { environment } from '../../environment';
 import { Storage } from '@ionic/storage';
 import { HttpService } from '../../services/httpService';
 import { UserData } from '../../models/userData';
+import { NotificationService } from '../../services/notificationService';
 
 @Component({
     selector: 'page-login',
@@ -20,7 +21,8 @@ export class LoginPage {
         public navCtrl: NavController, public fb: Facebook,
         private storage: Storage, private httpService: HttpService,
         private platform: Platform,
-        private navParams: NavParams
+        private navParams: NavParams,
+        private notificationService: NotificationService
     ) {
     }
 
@@ -54,17 +56,22 @@ export class LoginPage {
     }
 
     //add user to System
-    addUser(data: UserData, callback: (r: any) => void): void {
-        this.httpService.post(environment.endpoints.userLogin, data)
-            .subscribe(
-            (response: Response) => {
-                if (response.status == 200)
-                    callback(response.json());
-            },
-            err => {
-                // Log errors if any
-                console.log(err);
-            });
+    addUser(data: UserData, callback: Function): void {
+
+        this.notificationService.SetUpPush((id) => {
+
+            data.pushId = id;
+            this.httpService.post(environment.endpoints.userLogin, data)
+                .subscribe(
+                (response: Response) => {
+                    if (response.status == 200)
+                        callback(response.json());
+                },
+                err => {
+                    // Log errors if any
+                    console.log(err);
+                });
+        });
     }
 
     ionViewWillEnter() {
