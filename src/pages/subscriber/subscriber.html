@@ -1,0 +1,36 @@
+<ion-header>
+    <ion-navbar>
+        <button ion-button menuToggle right>
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <ion-title>
+            Subscribers
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-card *ngIf="subscribers==null || subscribers.length==0">
+
+        <ion-card-header>
+            No Subscribers Found
+        </ion-card-header>
+
+        <ion-card-content>
+            Go ahead and add subscribers to update about your schedule.
+        </ion-card-content>
+
+    </ion-card>
+    <ion-list>
+        <ion-item *ngFor="let subs of subscribers">
+            <ion-label>{{subs.name}}</ion-label>
+            <ion-checkbox></ion-checkbox>
+        </ion-item>
+    </ion-list>
+
+    <ion-fab right bottom>
+        <button (click)="openAddSubscribers()" ion-fab color="primary">
+            <ion-icon name="add"></ion-icon>
+        </button>
+    </ion-fab>
+</ion-content>

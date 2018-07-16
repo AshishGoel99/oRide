@@ -10,6 +10,13 @@
     <ion-grid>
         <ion-row>
             <ion-col>
+                <button (click)="liveLocation()" ion-button icon-only clear color="dark">
+                    <ion-icon name="locate"></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>
                 <ion-item>
                     <ion-label>Go Time</ion-label>
                     <ion-datetime displayFormat="hh:mm A" [(ngModel)]="route.startTime">
@@ -109,7 +116,8 @@
                 <ion-input type="tel" [(ngModel)]="schedule.contactNo" placeholder="Contact"></ion-input>
             </ion-col>
         </ion-row> -->
-        <br><br>
+        <br>
+        <br>
         <ion-row>
             <ion-col>
                 <button (click)="updateRoute()" ion-button icon-only clear color="primary">

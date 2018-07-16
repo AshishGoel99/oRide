@@ -30,6 +30,7 @@ import { RouteSearchResultPage } from '../pages/routes/routeSearchResult';
 import { EditSchedulePage } from '../pages/schedule/editSchedule';
 import { Push } from '@ionic-native/push';
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { SubscriberPage } from '../pages/subscriber/subscriber';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
     SchedulePage2,
     ViewRoutePage,
     RouteSearchResultPage,
-    EditSchedulePage
+    EditSchedulePage,
+    SubscriberPage
   ],
   imports: [
     BrowserModule,
@@ -64,10 +66,11 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
     SideMenu,
     SettingPage,
     RoutePage,
-    SchedulePage2,
-    ViewRoutePage,
-    RouteSearchResultPage,
-    EditSchedulePage
+    // SchedulePage2,
+    // ViewRoutePage,
+    // RouteSearchResultPage,
+    // EditSchedulePage
+    SubscriberPage
   ],
   providers: [
     StatusBar,

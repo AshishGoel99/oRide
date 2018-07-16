@@ -3,6 +3,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Route } from '../models/route';
 import { PushObject, Push } from '@ionic-native/push';
 import { DateTimeService } from './datetimeService';
+import { RouteService } from './routeService';
 
 @Injectable()
 export class NotificationService {
@@ -10,7 +11,8 @@ export class NotificationService {
     constructor(
         private localNotifications: LocalNotifications,
         private push: Push,
-        private dateTimeService: DateTimeService
+        private dateTimeService: DateTimeService,
+        private routeService: RouteService
     ) {
     }
 
@@ -32,7 +34,9 @@ export class NotificationService {
                                 title: 'Ready',
                                 text: `It's time to leave for ` + route.from.name,
                                 led: 'FF0000',
-                                firstAt: this.dateTimeService.GetNextWeekDayDateTime(day, route.startTime),
+                                trigger: {
+                                    firstAt: this.dateTimeService.GetNextWeekDayDateTime(day, route.startTime)
+                                },
                                 every: 'week'
                             });
 
@@ -41,7 +45,9 @@ export class NotificationService {
                                 title: 'Ready',
                                 text: `It's time to leave for ` + route.to.name,
                                 led: 'FF0000',
-                                firstAt: this.dateTimeService.GetNextWeekDayDateTime(day, route.returnTime),
+                                trigger: {
+                                    firstAt: this.dateTimeService.GetNextWeekDayDateTime(day, route.returnTime)
+                                },
                                 every: 'week'
                             });
 
@@ -54,7 +60,9 @@ export class NotificationService {
                             title: 'Ready',
                             text: `It's time to leave for ` + route.from.name,
                             led: 'FF0000',
-                            at: this.dateTimeService.ParseDateTime(route.date, route.startTime)
+                            trigger: {
+                                at: this.dateTimeService.ParseDateTime(route.date, route.startTime)
+                            }
                         });
 
                         //schedule for Go Time.
@@ -62,22 +70,26 @@ export class NotificationService {
                             title: 'Ready',
                             text: `It's time to leave for ` + route.to.name,
                             led: 'FF0000',
-                            at: this.dateTimeService.ParseDateTime(route.date, route.returnTime)
+                            trigger: {
+                                at: this.dateTimeService.ParseDateTime(route.date, route.returnTime)
+                            }
                         });
                     }
 
                 });
             });
-        // Schedule delayed notification
-        let time = new Date();
-        time.setMinutes(time.getMinutes() + 1);
+        // // Schedule delayed notification
+        // let time = new Date();
+        // time.setMinutes(time.getMinutes() + 1);
 
-        this.localNotifications.schedule({
-            text: 'Delayed ILocalNotification',
-            at: time,
-            led: 'FF0000',
-            sound: null
-        });
+        // this.localNotifications.schedule({
+        //     text: 'Delayed ILocalNotification',
+        //     trigger: {
+        //         at: time,
+        //     },
+        //     led: 'FF0000',
+        //     sound: null
+        // });
     }
 
     public SetUpPush(callback: Function): void {
@@ -98,5 +110,9 @@ export class NotificationService {
         });
 
         pushObject.on('error').subscribe(error => console.error('Error with Push plugin' + error));
+    }
+
+    public alertAboutRouteStart(routeId: string) {
+        this.routeService.setRouteStarted(routeId);
     }
 }

@@ -1,6 +1,7 @@
 import { ViewController, NavController } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { SettingPage } from "../setting/setting";
+import { SubscriberPage } from '../subscriber/subscriber';
 
 @Component({
     templateUrl: 'sideMenu.html'
@@ -14,4 +15,11 @@ export class SideMenu {
             this.navCtrl.push(SettingPage);
         });
     }
+
+    openSubscriberPage() {
+        this.viewCtrl.dismiss().then(() => {
+            this.navCtrl.push(SubscriberPage);
+        });
+    }
+
 }

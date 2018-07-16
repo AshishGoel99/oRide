@@ -8,6 +8,8 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { environment } from '../environment';
 import { LoginPage } from '../pages/login/login';
 import { UserData } from '../models/userData';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { SubscriberPage } from '../pages/subscriber/subscriber';
 
 @Component({
   templateUrl: 'app.html'
@@ -15,11 +17,13 @@ import { UserData } from '../models/userData';
 export class MyApp {
   @ViewChild(Nav) nav;
   rootPage: any = TabsPage;
-  userData: UserData=new UserData();
+  userData: UserData = new UserData();
+  showMenu: boolean = true;
 
   constructor(platform: Platform,
     private statusBar: StatusBar,
     private splashScreen: SplashScreen,
+    private localNotifications: LocalNotifications,
     private storage: Storage) {
 
     platform.ready().then(() => {
@@ -28,7 +32,16 @@ export class MyApp {
 
       //Validate if user is logged in otherwise show him login page.
       this.validateUserLogin();
+
+      this.localNotifications.on('click').subscribe(value => {
+        console.log(value);
+      });
     });
+  }
+
+  openSubscriberPage() {
+    this.nav.push(SubscriberPage);
+    this.showMenu = false;
   }
 
   private validateUserLogin(): void {
@@ -52,12 +65,5 @@ export class MyApp {
         env.splashScreen.hide();
         env.statusBar.styleDefault();
       });
-  }
-
-
-
-  ionViewDidLoad() {
-
-    console.log("Hey...");
   }
 }

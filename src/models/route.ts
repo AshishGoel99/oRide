@@ -20,4 +20,5 @@ export class Route extends MapElements {
     contactNo: string;
     waypoints: Array<string>;
     bounds: string;
+    locRef?: string;
 }

@@ -1,4 +1,4 @@
-<ion-menu side="right" [content]="mycontent">
+<ion-menu side="right" [content]="mycontent" [enabled]="showMenu">
     <ion-content>
         <ion-list>
             <ion-card text-center>
@@ -9,6 +9,7 @@
                     <p>Have some p tag here</p>
                 </ion-card-content>
             </ion-card>
+            <button ion-item (click)="openSubscriberPage()">Subscribers</button>
             <button ion-item>
                 <ion-icon name="information-circle" item-start></ion-icon>
                 About

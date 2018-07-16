@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { googlemaps } from 'googlemaps';
 import { SideMenu } from "../sideMenu/sideMenu";
 import { RouteService } from "../../services/routeService";
 import { GoogleService } from "../../services/googleService";
@@ -10,7 +9,7 @@ import { ViewRoutePage } from '../routes/viewRoute';
 import { Storage } from '@ionic/storage';
 import { RouteSearchResultPage } from '../routes/routeSearchResult';
 import { environment } from '../../environment';
-
+import {} from 'googlemaps';
 
 @Component({
   selector: 'page-home',

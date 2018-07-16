@@ -6,6 +6,7 @@ import { RouteService } from "../../services/routeService";
 import { environment } from "../../environment";
 import { Storage } from '@ionic/storage';
 import { NotificationService } from "../../services/notificationService";
+import firebase from 'firebase';
 
 @Component({
     selector: 'page-editSchedule',
@@ -60,62 +61,114 @@ export class EditSchedulePage implements OnInit {
         let env = this;
         this.routeService.update(this.route)
             .subscribe(
-            response => {
-                // Emit list event
-                this.storage.get(environment.routeDataKey)
-                    .then((value: Route[]) => {
+                response => {
+                    // Emit list event
+                    this.storage.get(environment.routeDataKey)
+                        .then((value: Route[]) => {
 
-                        let newRoutes: Route[] = [];
-                        if (value != null) {
-                            value.forEach(element => {
-                                newRoutes.push(element.id == env.route.id ? env.route : element);
-                            });
-                        }
-
-                        this.storage.set(environment.routeDataKey, newRoutes)
-                            .then(function () {
-                                env.notificationService.ScheduleNotifications(newRoutes, () => {
-                                    env.callback();
-                                    env.viewCtrl.dismiss();
+                            let newRoutes: Route[] = [];
+                            if (value != null) {
+                                value.forEach(element => {
+                                    newRoutes.push(element.id == env.route.id ? env.route : element);
                                 });
-                            });
-                    });
-            },
-            err => {
-                // Log errors if any
-                console.log(err);
-            });
+                            }
+
+                            this.storage.set(environment.routeDataKey, newRoutes)
+                                .then(function () {
+                                    env.notificationService.ScheduleNotifications(newRoutes, () => {
+                                        env.callback();
+                                        env.viewCtrl.dismiss();
+                                    });
+                                });
+                        });
+                },
+                err => {
+                    // Log errors if any
+                    console.log(err);
+                });
     }
 
     private deleteRoute(): void {
         let env = this;
         this.routeService.delete(this.route.id)
             .subscribe(
-            response => {
-                // Emit list event
-                this.storage.get(environment.routeDataKey)
-                    .then((value: Route[]) => {
+                response => {
+                    // Emit list event
+                    this.storage.get(environment.routeDataKey)
+                        .then((value: Route[]) => {
 
-                        let newRoutes: Route[] = [];
-                        if (value != null) {
-                            value.forEach(element => {
-                                if (element.id != env.route.id)
-                                    newRoutes.push(element);
-                            });
-                        }
-
-                        this.storage.set(environment.routeDataKey, newRoutes)
-                            .then(function () {
-                                env.notificationService.ScheduleNotifications(newRoutes, () => {
-                                    env.callback();
-                                    env.viewCtrl.dismiss();
+                            let newRoutes: Route[] = [];
+                            if (value != null) {
+                                value.forEach(element => {
+                                    if (element.id != env.route.id)
+                                        newRoutes.push(element);
                                 });
-                            });
-                    });
-            },
-            err => {
-                // Log errors if any
-                console.log(err);
+                            }
+
+                            this.storage.set(environment.routeDataKey, newRoutes)
+                                .then(function () {
+                                    env.notificationService.ScheduleNotifications(newRoutes, () => {
+                                        env.callback();
+                                        env.viewCtrl.dismiss();
+                                    });
+                                });
+                        });
+                },
+                err => {
+                    // Log errors if any
+                    console.log(err);
+                });
+    }
+
+
+    private firebaseDocRef: firebase.firestore.DocumentReference;
+
+    private firebaseCollection: firebase.firestore.CollectionReference;
+
+    public liveLocation(): void {
+        firebase.initializeApp({
+            apiKey: 'wzqJCdrIshGKX3mUclnAwWU4d5b39KlfUQyk4bhE',
+            authDomain: 'oride-177404.firebaseapp.com',
+            projectId: 'oride-177404'
+        });
+        this.firebaseCollection = firebase.firestore().collection('locations');
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                this.postLive(position);
             });
+
+            navigator.geolocation.watchPosition(position => {
+                this.postLive(position);
+            });
+        }
+        else
+            console.log("GeoLocation not supported.");
+
+        this.notifySubscribers();
+    }
+
+    private postLive(location: Position): void {
+        if (this.firebaseDocRef == null) {
+            this.firebaseCollection.add({
+                longitude: location.coords.longitude,
+                latitude: location.coords.latitude
+            })
+                .then(ref => {
+                    this.firebaseDocRef = ref;
+                    console.log(ref);
+                })
+        }
+        else {
+            this.firebaseDocRef.set({
+                longitude: location.coords.longitude,
+                latitude: location.coords.latitude
+            });
+        }
+    }
+
+    private notifySubscribers() {
+
+        this.notificationService.alertAboutRouteStart(this.route.id);
     }
 }

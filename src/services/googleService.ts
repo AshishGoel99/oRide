@@ -6,6 +6,41 @@ declare let jsts: any;
 @Injectable()
 export class GoogleService {
 
+    public updateLiveLocation(mapElement: string, position: any): void {
+        let map = new google.maps.Map(document.getElementById(mapElement));
+        this.deleteMarkers();
+        let updatelocation = new google.maps.LatLng(position.latitude, position.longitude);
+        let image = 'assets/imgs/logo.png';
+        this.addLiveMarker(map, updatelocation, image);
+        this.setMapOnAll(map);
+    }
+
+    private markers = [];
+
+    private addLiveMarker(map, location, image) {
+        let marker = new google.maps.Marker({
+            position: location,
+            map: map,
+            icon: image
+        });
+        this.markers.push(marker);
+    }
+
+    private setMapOnAll(map) {
+        for (var i = 0; i < this.markers.length; i++) {
+            this.markers[i].setMap(map);
+        }
+    }
+
+    private clearMarkers() {
+        this.setMapOnAll(null);
+    }
+
+    private deleteMarkers() {
+        this.clearMarkers();
+        this.markers = [];
+    }
+
     setAutoComplete(element, callback): void {
         // Google Places API auto complete
         let input = document.getElementById(element).getElementsByTagName('input')[0];
